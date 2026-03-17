@@ -1,2 +1,1 @@
-def main() -> None:
-    print("Hello from sphinx-oceanid!")
+"""sphinx-oceanid: High-quality Mermaid diagrams in Sphinx."""

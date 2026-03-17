@@ -1,24 +1,76 @@
 [project]
 name = "sphinx-oceanid"
-version = "0.0.1"
-description = "Add your description here"
+version = "0.1.0"
+description = "High-quality Mermaid diagrams in Sphinx, powered by beautiful-mermaid"
 readme = "README.md"
-authors = [
-    { name = "driller", email = "eleshis@gmail.com" }
-]
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 requires-python = ">=3.13"
-dependencies = []
-
-[project.scripts]
-sphinx-oceanid = "sphinx_oceanid:main"
+keywords = ["sphinx", "mermaid", "diagrams", "documentation", "beautiful-mermaid"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Sphinx :: Extension",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Documentation",
+]
+authors = [
+    { name = "driller", email = "eleshis@gmail.com" },
+]
+dependencies = [
+    "sphinx>=7.4",
+]
 
 [build-system]
 requires = ["uv_build>=0.10.0,<0.11.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
+test = [
+    "pytest",
+    "myst-parser",
+    "sphinx-revealjs",
+]
+dev = [
+    "ruff",
+    "mypy",
+    { include-group = "test" },
+]
 docs = [
     "myst-parser>=5.0.0",
     "shibuya>=2026.1.9",
     "sphinx>=9.1.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+
+[tool.ruff.lint]
+extend-select = [
+    "I",     # isort
+    "UP",    # pyupgrade
+    "B",     # flake8-bugbear
+    "SIM",   # flake8-simplify
+    "TCH",   # flake8-type-checking
+    "RUF",   # Ruff-specific
+    "PIE",   # flake8-pie
+    "PT",    # flake8-pytest-style
+    "RSE",   # flake8-raise
+    "C4",    # flake8-comprehensions
+    "FURB",  # refurb
+    "PERF",  # perflint
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["sphinx_oceanid"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unreachable = true
+enable_error_code = ["ignore-without-code", "redundant-cast", "truthy-bool"]
