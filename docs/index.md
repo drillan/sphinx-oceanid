@@ -176,4 +176,5 @@ install
 supported-diagrams
 configuration
 revealjs
+troubleshooting
 ```
