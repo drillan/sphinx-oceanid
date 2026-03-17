@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -11,14 +12,19 @@ PROJECT_ROOT = Path(__file__).parent.parent
 DOCS_DIR = PROJECT_ROOT / "docs"
 BUILD_DIR = PROJECT_ROOT / "docs" / "_build" / "html"
 
+SPHINX_BUILD_TIMEOUT_SECONDS = 120
+
 
 @pytest.fixture(scope="module")
 def docs_build() -> None:
     """Build the documentation and assert success."""
+    if BUILD_DIR.exists():
+        shutil.rmtree(BUILD_DIR)
     result = subprocess.run(
         ["uv", "--directory", str(PROJECT_ROOT), "run", "sphinx-build", "-W", str(DOCS_DIR), str(BUILD_DIR)],
         capture_output=True,
         text=True,
+        timeout=SPHINX_BUILD_TIMEOUT_SECONDS,
     )
     assert result.returncode == 0, f"Docs build failed:\n{result.stderr}"
 
