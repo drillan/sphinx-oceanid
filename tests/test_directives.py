@@ -133,3 +133,23 @@ class TestUnsupportedActionError:
         """oceanid_unsupported_action='error' causes build failure."""
         with pytest.raises(ExtensionError, match="not supported"):
             app.build()
+
+
+class TestExternalFile:
+    """Tests for external .mmd file support (US7, T043)."""
+
+    @pytest.mark.sphinx("html", testroot="external-file")
+    def test_directive_external_file(self, app: Sphinx) -> None:
+        """External file reference loads mermaid code correctly."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        assert len(nodes) == 1
+        assert "Alice" in nodes[0]["code"]
+        assert nodes[0]["diagram_type"] == "sequenceDiagram"
+
+    @pytest.mark.sphinx("html", testroot="external-file-not-found")
+    def test_directive_external_file_not_found(self, app: Sphinx) -> None:
+        """Non-existent external file raises ExtensionError."""
+        with pytest.raises(ExtensionError, match="not found"):
+            app.build()
