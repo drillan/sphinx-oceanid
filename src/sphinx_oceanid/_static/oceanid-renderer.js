@@ -45,30 +45,6 @@ const partitionByVisibility = (elements) => {
 };
 
 /**
- * Resolve theme colors from config and beautiful-mermaid THEMES.
- *
- * When theme is "auto", uses themeLight as default.
- * Full dark/light auto-detection is handled by oceanid-theme.js (T025).
- *
- * @param {object} config - Oceanid config object
- * @param {object} THEMES - beautiful-mermaid THEMES map
- * @returns {object} DiagramColors object for renderMermaidSVG
- */
-const resolveThemeColors = (config, THEMES) => {
-  const themeName =
-    config.theme === "auto" ? config.themeLight : config.theme;
-  const colors = THEMES[themeName];
-  if (!colors) {
-    console.warn(
-      `sphinx-oceanid: Theme "${themeName}" not found, using first available theme`
-    );
-    const firstKey = Object.keys(THEMES)[0];
-    return THEMES[firstKey];
-  }
-  return colors;
-};
-
-/**
  * Main entry point. Runs on window load.
  */
 const main = async () => {
@@ -78,6 +54,10 @@ const main = async () => {
     const beautifulMermaid = await import(config.beautifulMermaidUrl);
     const renderFn = beautifulMermaid.renderMermaidSVG;
     const THEMES = beautifulMermaid.THEMES;
+
+    const { resolveThemeColors, observeThemeChanges } = await import(
+      "./oceanid-theme.js"
+    );
 
     const themeColors = resolveThemeColors(config, THEMES);
 
@@ -94,6 +74,8 @@ const main = async () => {
 
     renderVisibleDiagrams(visible, renderFn, themeColors);
     setupLazyRendering(hidden, renderFn, themeColors);
+
+    observeThemeChanges(config, THEMES, renderFn);
   } catch (err) {
     console.error("sphinx-oceanid: Failed to initialize:", err);
   }
