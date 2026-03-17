@@ -2,12 +2,17 @@
 
 from types import SimpleNamespace
 
+import pytest
+from sphinx.errors import ExtensionError
+
 from sphinx_oceanid.config import (
     BEAUTIFUL_MERMAID_CDN_TEMPLATE,
     BEAUTIFUL_MERMAID_VERSION,
     CONFIG_SPECS,
+    VALID_UNSUPPORTED_ACTIONS,
     ConfigSpec,
     resolve_js_url,
+    validate_config,
 )
 
 
@@ -63,6 +68,33 @@ class TestResolveJsUrl:
         )
         url = resolve_js_url(config)
         assert url == "/static/beautiful-mermaid.js"
+
+
+class TestValidateConfig:
+    """Tests for validate_config function."""
+
+    def test_valid_warning_action(self) -> None:
+        """'warning' is a valid action value."""
+        app = SimpleNamespace()
+        config = SimpleNamespace(oceanid_unsupported_action="warning")
+        validate_config(app, config)  # type: ignore[arg-type]
+
+    def test_valid_error_action(self) -> None:
+        """'error' is a valid action value."""
+        app = SimpleNamespace()
+        config = SimpleNamespace(oceanid_unsupported_action="error")
+        validate_config(app, config)  # type: ignore[arg-type]
+
+    def test_invalid_action_raises(self) -> None:
+        """Invalid action value raises ExtensionError."""
+        app = SimpleNamespace()
+        config = SimpleNamespace(oceanid_unsupported_action="err")
+        with pytest.raises(ExtensionError, match='Invalid oceanid_unsupported_action: "err"'):
+            validate_config(app, config)  # type: ignore[arg-type]
+
+    def test_valid_unsupported_actions_constant(self) -> None:
+        """VALID_UNSUPPORTED_ACTIONS contains expected values."""
+        assert {"warning", "error"} == VALID_UNSUPPORTED_ACTIONS
 
 
 class TestConstants:

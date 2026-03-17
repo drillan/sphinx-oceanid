@@ -58,6 +58,7 @@ def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
     """
     if not node["is_supported"]:
         _render_unsupported(self, node)
+        return  # _render_unsupported raises SkipNode; return as safety net
 
     code: str = node["code"]
 
