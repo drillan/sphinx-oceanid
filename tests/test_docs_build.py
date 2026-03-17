@@ -66,3 +66,39 @@ class TestDocsBuild:
         assert "slidechanged" in revealjs_html
         assert "IntersectionObserver" in revealjs_html
         assert "sphinx_revealjs" in revealjs_html
+
+    def test_troubleshooting_page_exists(self, docs_build: None) -> None:
+        """Troubleshooting page is generated."""
+        assert (BUILD_DIR / "troubleshooting.html").exists()
+
+    def test_troubleshooting_in_toctree(self, docs_build: None) -> None:
+        """Troubleshooting page is linked from the index toctree."""
+        index_html = (BUILD_DIR / "index.html").read_text()
+        assert "troubleshooting" in index_html
+
+    def test_troubleshooting_page_contains_common_issues(self, docs_build: None) -> None:
+        """Troubleshooting page contains all expected common issue sections."""
+        html = (BUILD_DIR / "troubleshooting.html").read_text()
+        assert "CDN unreachable" in html
+        assert "Rendering errors" in html
+        assert "Theme mismatch" in html
+        assert "Unsupported diagram types" in html
+        assert "sphinx-revealjs" in html
+        assert "Local JS bundle" in html
+        assert "Migration from sphinxcontrib-mermaid" in html
+
+    def test_troubleshooting_page_contains_faq(self, docs_build: None) -> None:
+        """Troubleshooting page contains the FAQ section with expected questions."""
+        html = (BUILD_DIR / "troubleshooting.html").read_text()
+        assert "FAQ" in html
+        assert "Which diagram types are supported" in html
+        assert "standard Mermaid.js" in html
+        assert "PDF" in html
+        assert "theme auto-detection" in html
+
+    def test_troubleshooting_cross_references(self, docs_build: None) -> None:
+        """Troubleshooting page contains cross-references to other doc pages."""
+        html = (BUILD_DIR / "troubleshooting.html").read_text()
+        assert "configuration" in html
+        assert "supported-diagram" in html
+        assert "revealjs" in html
