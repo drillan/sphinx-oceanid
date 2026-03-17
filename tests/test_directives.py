@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
+from sphinx.errors import ExtensionError
 
 from sphinx_oceanid.nodes import mermaid_node
 
@@ -41,3 +42,17 @@ class TestMermaidDirective:
         # After implementation, the mermaid directive should warn about empty content.
         # "empty content" (with space) avoids matching the path "empty-content" (with hyphen).
         assert "empty content" in warnings.lower()
+
+
+class TestUnsupportedActionError:
+    """Tests for oceanid_unsupported_action='error' (US4)."""
+
+    @pytest.mark.sphinx(
+        "html",
+        testroot="unsupported-diagram",
+        confoverrides={"oceanid_unsupported_action": "error"},
+    )
+    def test_unsupported_action_error(self, app: Sphinx) -> None:
+        """oceanid_unsupported_action='error' causes build failure."""
+        with pytest.raises(ExtensionError, match="not supported"):
+            app.build()

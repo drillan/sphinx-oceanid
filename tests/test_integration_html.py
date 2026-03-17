@@ -45,6 +45,25 @@ def _extract_oceanid_divs(html_content: str) -> list[str]:
     return re.findall(r'<div [^>]*class="[^"]*oceanid-diagram[^"]*"[^>]*>', html_content)
 
 
+class TestUnsupportedDiagramIntegration:
+    """Integration tests for unsupported diagram display (US4)."""
+
+    @pytest.mark.sphinx("html", testroot="unsupported-diagram")
+    def test_unsupported_diagram_display(self, app: Sphinx, index: str) -> None:
+        """Unsupported diagram produces styled error message in full HTML build."""
+        assert "oceanid-unsupported" in index
+        assert "gantt" in index
+        # Should NOT have the normal diagram container
+        assert "oceanid-diagram" not in index
+
+    @pytest.mark.sphinx("html", testroot="unsupported-diagram")
+    def test_unsupported_diagram_shows_source_code(self, app: Sphinx, index: str) -> None:
+        """Unsupported diagram shows the original Mermaid source code."""
+        assert "oceanid-unsupported-code" in index
+        # The gantt source code should be visible
+        assert "A Gantt Chart" in index
+
+
 class TestMarkdownIntegration:
     """Integration tests for MyST Markdown input (US2).
 

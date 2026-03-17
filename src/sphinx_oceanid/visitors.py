@@ -5,10 +5,48 @@ from __future__ import annotations
 import html
 from typing import TYPE_CHECKING
 
+from docutils.nodes import SkipNode
+from sphinx.util import logging
+
+from .config import SUPPORTED_DIAGRAM_TYPES
+
 if TYPE_CHECKING:
     from sphinx.writers.html5 import HTML5Translator
 
     from .nodes import mermaid_node
+
+logger = logging.getLogger(__name__)
+
+
+def _render_unsupported(self: HTML5Translator, node: mermaid_node) -> None:
+    """Render HTML for an unsupported diagram type and raise SkipNode.
+
+    Outputs ``<div class="oceanid-unsupported">`` with a message listing
+    supported types and the original Mermaid source code.
+    """
+    code: str = node["code"]
+    diagram_type: str = node.get("diagram_type") or "unknown"
+    supported_list = ", ".join(sorted(SUPPORTED_DIAGRAM_TYPES))
+
+    logger.warning(
+        'Diagram type "%s" is not supported by sphinx-oceanid. Supported types: %s',
+        diagram_type,
+        supported_list,
+        location=node,
+    )
+
+    self.body.append('<div class="oceanid-unsupported">\n')
+    self.body.append(
+        f'<p class="oceanid-unsupported-message">'
+        f"Diagram type &quot;{html.escape(diagram_type)}&quot; "
+        f"is not supported by sphinx-oceanid. "
+        f"Supported types: {html.escape(supported_list)}."
+        f"</p>\n"
+    )
+    self.body.append(f'<pre class="oceanid-unsupported-code">{html.escape(code)}</pre>\n')
+    self.body.append("</div>\n")
+
+    raise SkipNode
 
 
 def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
@@ -16,7 +54,11 @@ def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
 
     Outputs ``<div class="oceanid-diagram" data-oceanid-code="...">``
     with ``<noscript>`` for accessibility (FR-011, FR-020).
+    For unsupported diagram types, delegates to ``_render_unsupported``.
     """
+    if not node["is_supported"]:
+        _render_unsupported(self, node)
+
     code: str = node["code"]
 
     classes = ["oceanid-diagram"]
