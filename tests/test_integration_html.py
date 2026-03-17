@@ -131,6 +131,26 @@ class TestMarkdownIntegration:
         assert "<noscript>" in index
 
 
+class TestAutoclasstreeIntegration:
+    """Integration tests for autoclasstree directive (US9)."""
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree")
+    def test_autoclasstree_build_succeeds(self, app: Sphinx, build_all: None) -> None:
+        """HTML build with autoclasstree directive completes successfully."""
+        assert (app.outdir / "index.html").exists()
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree")
+    def test_autoclasstree_html_contains_diagram(self, app: Sphinx, index: str) -> None:
+        """autoclasstree produces oceanid-diagram in HTML output."""
+        assert "oceanid-diagram" in index
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree")
+    def test_autoclasstree_html_contains_inheritance(self, app: Sphinx, index: str) -> None:
+        """autoclasstree HTML contains class inheritance relationships."""
+        # PurePosixPath inherits from PurePath
+        assert "PurePath" in index
+
+
 def _extract_config_json(html_content: str) -> dict[str, object]:
     """Extract the oceanid-config JSON from HTML content."""
     match = re.search(

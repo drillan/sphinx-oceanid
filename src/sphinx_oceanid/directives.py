@@ -13,6 +13,7 @@ from sphinx.errors import ExtensionError
 from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
 
+from .autoclassdiag import class_diagram
 from .config import SUPPORTED_DIAGRAM_TYPES
 from .diagram_types import extract_diagram_type, is_supported_diagram
 from .nodes import mermaid_node
@@ -158,3 +159,35 @@ class Mermaid(SphinxDirective):
         figure_node.append(caption_node)
 
         return [figure_node]
+
+
+class MermaidClassDiagram(Mermaid):
+    """Directive for auto-generating Mermaid class diagrams from Python class hierarchies.
+
+    Usage::
+
+        .. autoclasstree:: mypackage.MyClass
+           :full:
+
+    Overrides ``_get_code()`` to generate classDiagram from the given class arguments.
+    All other behavior (frontmatter, options, node creation) is inherited from ``Mermaid``.
+    """
+
+    has_content = False
+    required_arguments = 1
+    optional_arguments = 100
+    option_spec = {  # noqa: RUF012
+        **Mermaid.option_spec,
+        "full": directives.flag,
+        "strict": directives.flag,
+        "namespace": directives.unchanged,
+    }
+
+    def _get_code(self) -> str:
+        """Generate Mermaid classDiagram code from Python class hierarchies."""
+        return class_diagram(
+            *self.arguments,
+            full="full" in self.options,
+            strict="strict" in self.options,
+            namespace=self.options.get("namespace"),
+        )
