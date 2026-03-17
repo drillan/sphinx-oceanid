@@ -532,6 +532,7 @@ name = "sphinx-oceanid"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "pyyaml" },
     { name = "sphinx" },
 ]
 
@@ -557,7 +558,10 @@ test = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "sphinx", specifier = ">=7.4" }]
+requires-dist = [
+    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "sphinx", specifier = ">=7.4" },
+]
 
 [package.metadata.requires-dev]
 dev = [
