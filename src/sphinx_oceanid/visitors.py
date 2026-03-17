@@ -52,8 +52,14 @@ def _render_unsupported(self: HTML5Translator, node: mermaid_node) -> None:
 def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
     """Generate opening HTML for a Mermaid diagram.
 
-    Outputs ``<div class="oceanid-diagram" data-oceanid-code="...">``
-    with ``<noscript>`` for accessibility (FR-011, FR-020).
+    Outputs ``<div class="oceanid-diagram" ...>`` with:
+
+    - ``aria-label`` from ``:alt:`` for accessibility (FR-014)
+    - ``data-oceanid-code`` with XSS-safe escaped Mermaid source (FR-020)
+    - ``data-oceanid-zoom`` when ``:zoom:`` is enabled
+    - ``id`` from ``:name:`` or auto-generated ``zoom_id``
+    - ``<noscript>`` plain-text source display (FR-011)
+
     For unsupported diagram types, delegates to ``_render_unsupported``.
     """
     if not node["is_supported"]:

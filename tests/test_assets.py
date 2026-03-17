@@ -86,7 +86,7 @@ class TestAssetInjection:
         end = index.index("</script>", start)
         config = json.loads(index[start:end])
         assert "zoomSelectors" in config
-        # test-basic has at least two zoom-enabled diagrams (index + zoom page shares config per page)
+        # test-basic/index.rst has one zoom-enabled diagram
         assert len(config["zoomSelectors"]) >= 1
         # Each selector should start with #
         for selector in config["zoomSelectors"]:

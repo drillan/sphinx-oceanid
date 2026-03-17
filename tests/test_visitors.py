@@ -45,6 +45,11 @@ class TestDirectiveOptionHtml:
         assert "data-oceanid-zoom" in index
 
     @pytest.mark.sphinx("html", testroot="basic")
+    def test_zoom_id_as_html_id(self, app: Sphinx, index: str) -> None:
+        """zoom-enabled diagram without :name: gets id from zoom_id."""
+        assert 'id="oceanid-zoom-' in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
     def test_alt_aria_label(self, app: Sphinx, index: str) -> None:
         """alt option produces aria-label attribute in HTML."""
         assert 'aria-label="Sequence diagram of greeting"' in index

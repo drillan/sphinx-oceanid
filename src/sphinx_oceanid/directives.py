@@ -104,14 +104,17 @@ class Mermaid(SphinxDirective):
             if isinstance(parsed, dict):
                 config_dict.update(parsed)
 
+        frontmatter: dict[str, object] = {}
+        if config_dict:
+            frontmatter["config"] = config_dict
         if "title" in self.options:
-            config_dict["title"] = self.options["title"]
+            frontmatter["title"] = self.options["title"]
 
-        if not config_dict:
+        if not frontmatter:
             return code
 
         frontmatter_yaml = yaml.dump(
-            {"config": config_dict},
+            frontmatter,
             default_flow_style=False,
             allow_unicode=True,
         ).rstrip("\n")

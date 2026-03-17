@@ -103,6 +103,24 @@ class TestDirectiveOptions:
         assert "---" in title_nodes[0]["code"]
 
 
+class TestInvalidConfig:
+    """Tests for invalid :config: option handling."""
+
+    @pytest.mark.sphinx("html", testroot="invalid-config")
+    def test_invalid_json_config_warns(self, app: Sphinx) -> None:
+        """Invalid JSON in :config: option emits a Sphinx warning."""
+        app.build()
+        warnings: str = app._warning.getvalue()  # type: ignore[attr-defined]
+        assert "Invalid JSON" in warnings
+
+    @pytest.mark.sphinx("html", testroot="invalid-config")
+    def test_invalid_json_config_builds_without_frontmatter(self, app: Sphinx, index: str) -> None:
+        """Build succeeds without frontmatter when :config: has invalid JSON."""
+        assert "data-oceanid-code=" in index
+        # No frontmatter markers should appear in the code
+        assert "---" not in index.split("data-oceanid-code=")[1].split('"')[1]
+
+
 class TestUnsupportedActionError:
     """Tests for oceanid_unsupported_action='error' (US4)."""
 
