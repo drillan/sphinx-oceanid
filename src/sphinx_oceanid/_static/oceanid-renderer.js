@@ -1,0 +1,102 @@
+/**
+ * sphinx-oceanid: Main entry point for client-side Mermaid rendering.
+ *
+ * Loads config from #oceanid-config, dynamically imports beautiful-mermaid,
+ * resolves theme colors, partitions diagrams by visibility, and delegates
+ * rendering to oceanid-observer.js.
+ */
+
+/**
+ * Load configuration from the #oceanid-config JSON script element.
+ *
+ * @returns {object} Parsed config object
+ * @throws {Error} If #oceanid-config element is not found
+ */
+const loadConfig = () => {
+  const el = document.getElementById("oceanid-config");
+  if (!el || !el.textContent) {
+    throw new Error("oceanid-config element not found");
+  }
+  return JSON.parse(el.textContent);
+};
+
+/**
+ * Partition diagram elements into visible and hidden groups.
+ *
+ * Uses offsetParent and getClientRects() to determine visibility.
+ * Hidden elements will be lazily rendered via IntersectionObserver.
+ *
+ * @param {NodeList|Element[]} elements - .oceanid-diagram elements
+ * @returns {{visible: Element[], hidden: Element[]}}
+ */
+const partitionByVisibility = (elements) => {
+  const visible = [];
+  const hidden = [];
+
+  elements.forEach((el) => {
+    if (el.offsetParent === null || el.getClientRects().length === 0) {
+      hidden.push(el);
+    } else {
+      visible.push(el);
+    }
+  });
+
+  return { visible, hidden };
+};
+
+/**
+ * Resolve theme colors from config and beautiful-mermaid THEMES.
+ *
+ * When theme is "auto", uses themeLight as default.
+ * Full dark/light auto-detection is handled by oceanid-theme.js (T025).
+ *
+ * @param {object} config - Oceanid config object
+ * @param {object} THEMES - beautiful-mermaid THEMES map
+ * @returns {object} DiagramColors object for renderMermaidSVG
+ */
+const resolveThemeColors = (config, THEMES) => {
+  const themeName =
+    config.theme === "auto" ? config.themeLight : config.theme;
+  const colors = THEMES[themeName];
+  if (!colors) {
+    console.warn(
+      `sphinx-oceanid: Theme "${themeName}" not found, using first available theme`
+    );
+    const firstKey = Object.keys(THEMES)[0];
+    return THEMES[firstKey];
+  }
+  return colors;
+};
+
+/**
+ * Main entry point. Runs on window load.
+ */
+const main = async () => {
+  try {
+    const config = loadConfig();
+
+    const beautifulMermaid = await import(config.beautifulMermaidUrl);
+    const renderFn = beautifulMermaid.renderMermaidSVG;
+    const THEMES = beautifulMermaid.THEMES;
+
+    const themeColors = resolveThemeColors(config, THEMES);
+
+    const { renderVisibleDiagrams, setupLazyRendering } = await import(
+      "./oceanid-observer.js"
+    );
+
+    const diagrams = document.querySelectorAll(".oceanid-diagram");
+    if (diagrams.length === 0) {
+      return;
+    }
+
+    const { visible, hidden } = partitionByVisibility(diagrams);
+
+    renderVisibleDiagrams(visible, renderFn, themeColors);
+    setupLazyRendering(hidden, renderFn, themeColors);
+  } catch (err) {
+    console.error("sphinx-oceanid: Failed to initialize:", err);
+  }
+};
+
+window.addEventListener("load", main);
