@@ -24,7 +24,7 @@ oceanid_version = "1.1.3"
 | **Type** | `str` |
 | **Default** | `""` (empty — uses CDN) |
 
-Path to a local beautiful-mermaid JS bundle. When set, the CDN URL is not used. The path is relative to Sphinx's `_static/` directory.
+Path to a local beautiful-mermaid JS bundle. When set, the CDN URL is not used. The path is relative to the HTML output root (the value is used as-is as a script URL).
 
 ```python
 oceanid_local_js = "_static/beautiful-mermaid.js"

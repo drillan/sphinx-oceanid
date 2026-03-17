@@ -5,18 +5,6 @@
 - **Python**: 3.13 or later
 - **Sphinx**: 7.4 or later
 
-## Install from PyPI
-
-```bash
-pip install sphinx-oceanid
-```
-
-Or using [uv](https://docs.astral.sh/uv/):
-
-```bash
-uv add sphinx-oceanid
-```
-
 ## Install from GitHub
 
 ```bash
@@ -49,7 +37,7 @@ By default, sphinx-oceanid loads beautiful-mermaid from the jsDelivr CDN. To use
 
 2. Place it in your Sphinx `_static/` directory (e.g., `_static/beautiful-mermaid.js`).
 
-3. Set the path in `conf.py`:
+3. Set the path in `conf.py` (the path is relative to the HTML output root):
 
    ```python
    oceanid_local_js = "_static/beautiful-mermaid.js"
