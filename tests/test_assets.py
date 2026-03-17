@@ -51,3 +51,29 @@ class TestAssetInjection:
         cdn_url = BEAUTIFUL_MERMAID_CDN_TEMPLATE.format(version=BEAUTIFUL_MERMAID_VERSION)
         assert cdn_url not in index
         assert "/local/path.js" in index
+
+    @pytest.mark.sphinx("html", testroot="basic", confoverrides={"oceanid_theme": "tokyo-night"})
+    def test_config_json_theme(self, app: Sphinx, index: str) -> None:
+        """Theme setting is reflected in config JSON (T024)."""
+        marker = 'id="oceanid-config">'
+        start = index.index(marker) + len(marker)
+        end = index.index("</script>", start)
+        config = json.loads(index[start:end])
+        assert config["theme"] == "tokyo-night"
+
+    @pytest.mark.sphinx(
+        "html",
+        testroot="basic",
+        confoverrides={
+            "oceanid_theme_dark": "dracula",
+            "oceanid_theme_light": "github-light",
+        },
+    )
+    def test_config_json_theme_dark_light(self, app: Sphinx, index: str) -> None:
+        """Dark/light theme settings are reflected in config JSON (T024)."""
+        marker = 'id="oceanid-config">'
+        start = index.index(marker) + len(marker)
+        end = index.index("</script>", start)
+        config = json.loads(index[start:end])
+        assert config["themeDark"] == "dracula"
+        assert config["themeLight"] == "github-light"
