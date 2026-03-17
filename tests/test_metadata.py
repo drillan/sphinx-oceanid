@@ -3,70 +3,60 @@
 import tomllib
 from pathlib import Path
 
+import pytest
 
-def _load_pyproject() -> dict[str, object]:
-    """Load pyproject.toml as a dictionary."""
+
+@pytest.fixture(scope="module")
+def project() -> dict[str, object]:
+    """Load and return the [project] section from pyproject.toml."""
     path = Path(__file__).parent.parent / "pyproject.toml"
     with path.open("rb") as f:
-        return tomllib.load(f)
-
-
-def _get_project() -> dict[str, object]:
-    """Load and return the [project] section from pyproject.toml."""
-    data = _load_pyproject()
-    project = data["project"]
-    assert isinstance(project, dict)
-    return project
+        data = tomllib.load(f)
+    proj = data["project"]
+    assert isinstance(proj, dict)
+    return proj
 
 
 class TestProjectDependencies:
     """Verify runtime dependencies match spec-python.md requirements."""
 
-    def test_sphinx_dependency(self) -> None:
-        """sphinx>=7.4 must be in dependencies."""
-        project = _get_project()
+    @pytest.mark.parametrize("dep", ["sphinx>=7.4", "pyyaml>=6.0"])
+    def test_dependency_present(self, project: dict[str, object], dep: str) -> None:
+        """Each required dependency with version constraint must be in dependencies."""
         deps = project["dependencies"]
         assert isinstance(deps, list)
-        assert any("sphinx" in d for d in deps)
-
-    def test_pyyaml_dependency(self) -> None:
-        """pyyaml must be in dependencies (used by directives.py for YAML frontmatter)."""
-        project = _get_project()
-        deps = project["dependencies"]
-        assert isinstance(deps, list)
-        assert any("pyyaml" in str(d).lower() for d in deps), (
-            "pyyaml is missing from [project].dependencies - "
-            "directives.py imports yaml, so pyyaml must be a runtime dependency"
-        )
+        assert dep in deps, f"{dep} missing from [project].dependencies"
 
 
 class TestProjectMetadata:
     """Verify project metadata matches spec-python.md."""
 
-    def test_name(self) -> None:
-        project = _get_project()
+    def test_name(self, project: dict[str, object]) -> None:
         assert project["name"] == "sphinx-oceanid"
 
-    def test_version(self) -> None:
-        project = _get_project()
+    def test_version(self, project: dict[str, object]) -> None:
         assert project["version"] == "0.1.0"
 
-    def test_requires_python(self) -> None:
-        project = _get_project()
+    def test_requires_python(self, project: dict[str, object]) -> None:
         assert project["requires-python"] == ">=3.13"
 
-    def test_license(self) -> None:
-        project = _get_project()
+    def test_license(self, project: dict[str, object]) -> None:
         assert project["license"] == "BSD-3-Clause"
 
-    def test_classifiers_include_sphinx_extension(self) -> None:
-        project = _get_project()
+    def test_classifiers(self, project: dict[str, object]) -> None:
         classifiers = project["classifiers"]
         assert isinstance(classifiers, list)
-        assert "Framework :: Sphinx :: Extension" in classifiers
+        expected = [
+            "Development Status :: 3 - Alpha",
+            "Framework :: Sphinx :: Extension",
+            "License :: OSI Approved :: BSD License",
+            "Programming Language :: Python :: 3.13",
+            "Programming Language :: Python :: 3.14",
+            "Topic :: Documentation",
+        ]
+        assert set(classifiers) == set(expected)
 
-    def test_keywords(self) -> None:
-        project = _get_project()
+    def test_keywords(self, project: dict[str, object]) -> None:
         keywords = project["keywords"]
         assert isinstance(keywords, list)
         expected = {"sphinx", "mermaid", "diagrams", "documentation", "beautiful-mermaid"}

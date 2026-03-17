@@ -20,7 +20,7 @@ authors = [
 ]
 dependencies = [
     "sphinx>=7.4",
-    "pyyaml",
+    "pyyaml>=6.0",
 ]
 
 [build-system]

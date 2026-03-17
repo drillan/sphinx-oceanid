@@ -559,7 +559,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pyyaml" },
+    { name = "pyyaml", specifier = ">=6.0" },
     { name = "sphinx", specifier = ">=7.4" },
 ]
 
