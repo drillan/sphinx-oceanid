@@ -1,0 +1,104 @@
+/* sphinx-oceanid: Styles for Mermaid diagram rendering */
+
+/* Base layout */
+.oceanid-diagram {
+  display: block;
+  width: var(--oceanid-width, 100%);
+  margin: 1rem 0;
+}
+
+.oceanid-diagram .oceanid-svg-container {
+  width: 100%;
+}
+
+.oceanid-diagram .oceanid-svg-container svg {
+  width: 100%;
+  height: var(--oceanid-height, auto);
+  max-width: 100%;
+  display: block;
+}
+
+/* Alignment */
+.oceanid-diagram.align-center {
+  text-align: center;
+}
+
+.oceanid-diagram.align-left {
+  text-align: left;
+}
+
+.oceanid-diagram.align-right {
+  text-align: right;
+}
+
+/* Hide noscript after successful render */
+.oceanid-diagram[data-oceanid-rendered="true"] noscript {
+  display: none;
+}
+
+/* Unsupported diagram type */
+.oceanid-unsupported {
+  border: 2px dashed #e74c3c;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  background: #fdf2f2;
+}
+
+.oceanid-unsupported-message {
+  color: #e74c3c;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.oceanid-unsupported-code {
+  background: #f8f8f8;
+  padding: 0.5rem;
+  border-radius: 2px;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+/* Render error (FR-023) */
+.oceanid-render-error {
+  color: #e74c3c;
+  background: #fff5f5;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 0.9em;
+  border: 1px solid #e74c3c;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.oceanid-render-error-source {
+  background: #f8f8f8;
+  padding: 0.5rem;
+  border-radius: 2px;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.85em;
+  border: 1px solid #ddd;
+}
+
+/* JS module load failure source display (FR-024) */
+.oceanid-source-display {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 4px solid #3498db;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.9em;
+  margin: 1rem 0;
+}
+
+/* Zoom cursor */
+.oceanid-diagram[data-oceanid-zoom] svg {
+  cursor: grab;
+}
+
+.oceanid-diagram[data-oceanid-zoom] svg:active {
+  cursor: grabbing;
+}
