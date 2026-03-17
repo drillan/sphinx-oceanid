@@ -75,3 +75,4 @@ python_version = "3.13"
 strict = true
 warn_unreachable = true
 enable_error_code = ["ignore-without-code", "redundant-cast", "truthy-bool"]
+exclude = ["tests/roots/"]
