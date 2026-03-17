@@ -49,3 +49,20 @@ class TestDocsBuild:
         """Configuration page links to supported-diagram-types target."""
         config_html = (BUILD_DIR / "configuration.html").read_text()
         assert "supported-diagram" in config_html
+
+    def test_revealjs_page_exists(self, docs_build: None) -> None:
+        """sphinx-revealjs integration guide page is generated."""
+        assert (BUILD_DIR / "revealjs.html").exists()
+
+    def test_revealjs_in_toctree(self, docs_build: None) -> None:
+        """sphinx-revealjs page is linked from the index toctree."""
+        index_html = (BUILD_DIR / "index.html").read_text()
+        assert "revealjs" in index_html
+
+    def test_revealjs_page_contains_expected_sections(self, docs_build: None) -> None:
+        """sphinx-revealjs page contains key sections from the guide."""
+        revealjs_html = (BUILD_DIR / "revealjs.html").read_text()
+        assert "Prerequisites" in revealjs_html
+        assert "slidechanged" in revealjs_html
+        assert "IntersectionObserver" in revealjs_html
+        assert "sphinx_revealjs" in revealjs_html
