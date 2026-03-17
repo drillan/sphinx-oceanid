@@ -1,0 +1,24 @@
+[project]
+name = "sphinx-oceanid"
+version = "0.0.1"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "driller", email = "eleshis@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+sphinx-oceanid = "sphinx_oceanid:main"
+
+[build-system]
+requires = ["uv_build>=0.10.0,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+docs = [
+    "myst-parser>=5.0.0",
+    "shibuya>=2026.1.9",
+    "sphinx>=9.1.0",
+]
