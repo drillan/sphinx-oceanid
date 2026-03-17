@@ -94,7 +94,54 @@
   margin: 1rem 0;
 }
 
-/* Zoom cursor */
+/* Fullscreen modal (FR-018) */
+.oceanid-fullscreen-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.oceanid-fullscreen-modal.active {
+  display: flex;
+}
+
+.oceanid-fullscreen-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.oceanid-container-fullscreen {
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.oceanid-container-fullscreen svg {
+  display: block;
+}
+
+.oceanid-fullscreen-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  z-index: 10;
+}
+
+/* Zoom cursor (FR-017) */
 .oceanid-diagram[data-oceanid-zoom] svg {
   cursor: grab;
 }

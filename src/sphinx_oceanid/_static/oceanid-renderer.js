@@ -74,6 +74,16 @@ const main = async () => {
     renderVisibleDiagrams(visible, renderFn, themeColors);
     setupLazyRendering(hidden, renderFn, themeColors);
 
+    if (config.zoom || config.zoomSelectors.length > 0) {
+      const { setupZoom } = await import("./oceanid-zoom.js");
+      setupZoom(config.zoomSelectors);
+    }
+
+    if (config.fullscreen) {
+      const { setupFullscreen } = await import("./oceanid-fullscreen.js");
+      setupFullscreen(config);
+    }
+
     if (config.revealjs || typeof Reveal !== "undefined") {
       Reveal.addEventListener?.("slidechanged", () => {
         document
