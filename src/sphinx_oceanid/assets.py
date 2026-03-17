@@ -62,9 +62,11 @@ def _build_page_config(
 
     zoom_selectors: list[str] = []
     for node in mermaid_nodes:
-        zoom_id: str = node.get("zoom_id", "")
-        if zoom_id:
-            zoom_selectors.append(f"#{zoom_id}")
+        if node.get("zoom"):
+            ids: list[str] = node.get("ids", [])
+            element_id = ids[0] if ids else node.get("zoom_id", "")
+            if element_id:
+                zoom_selectors.append(f"#{element_id}")
 
     return {
         "beautifulMermaidUrl": resolve_js_url(config),

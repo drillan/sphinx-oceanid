@@ -36,6 +36,43 @@ class TestHtmlVisitor:
         assert "align-center" in index
 
 
+class TestDirectiveOptionHtml:
+    """Tests for directive option HTML output (T038)."""
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_zoom_data_attribute(self, app: Sphinx, index: str) -> None:
+        """zoom option produces data-oceanid-zoom attribute in HTML."""
+        assert "data-oceanid-zoom" in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_zoom_id_as_html_id(self, app: Sphinx, index: str) -> None:
+        """zoom-enabled diagram without :name: gets id from zoom_id."""
+        assert 'id="oceanid-zoom-' in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_alt_aria_label(self, app: Sphinx, index: str) -> None:
+        """alt option produces aria-label attribute in HTML."""
+        assert 'aria-label="Sequence diagram of greeting"' in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_caption_produces_figure(self, app: Sphinx, index: str) -> None:
+        """caption option wraps diagram in <figure> with <figcaption>."""
+        assert "<figure" in index
+        assert "<figcaption" in index
+        assert "My caption text" in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_config_frontmatter_in_code(self, app: Sphinx, index: str) -> None:
+        """config option injects frontmatter into data-oceanid-code."""
+        # The frontmatter with theme: forest should be in the escaped code attribute
+        assert "theme: forest" in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_title_frontmatter_in_code(self, app: Sphinx, index: str) -> None:
+        """title option injects title frontmatter into data-oceanid-code."""
+        assert "My Diagram Title" in index
+
+
 class TestUnsupportedDiagram:
     """Tests for unsupported diagram type handling (US4)."""
 

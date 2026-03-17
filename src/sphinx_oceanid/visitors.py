@@ -52,8 +52,14 @@ def _render_unsupported(self: HTML5Translator, node: mermaid_node) -> None:
 def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
     """Generate opening HTML for a Mermaid diagram.
 
-    Outputs ``<div class="oceanid-diagram" data-oceanid-code="...">``
-    with ``<noscript>`` for accessibility (FR-011, FR-020).
+    Outputs ``<div class="oceanid-diagram" ...>`` with:
+
+    - ``aria-label`` from ``:alt:`` for accessibility (FR-014)
+    - ``data-oceanid-code`` with XSS-safe escaped Mermaid source (FR-020)
+    - ``data-oceanid-zoom`` when ``:zoom:`` is enabled
+    - ``id`` from ``:name:`` or auto-generated ``zoom_id``
+    - ``<noscript>`` plain-text source display (FR-011)
+
     For unsupported diagram types, delegates to ``_render_unsupported``.
     """
     if not node["is_supported"]:
@@ -73,11 +79,20 @@ def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
     if ids:
         attrs.append(f'id="{html.escape(ids[0], quote=True)}"')
 
+    # FR-014: alt → aria-label for accessibility
+    alt: str = node.get("alt", "")
+    if alt:
+        attrs.append(f'aria-label="{html.escape(alt, quote=True)}"')
+
     # FR-020: XSS-safe data attribute
     attrs.append(f'data-oceanid-code="{html.escape(code, quote=True)}"')
 
     if node.get("zoom", False):
         attrs.append("data-oceanid-zoom")
+
+    zoom_id: str = node.get("zoom_id", "")
+    if zoom_id and not ids:
+        attrs.insert(1, f'id="{html.escape(zoom_id, quote=True)}"')
 
     self.body.append(f"<div {' '.join(attrs)}>\n")
 

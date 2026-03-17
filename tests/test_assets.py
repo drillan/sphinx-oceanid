@@ -77,3 +77,17 @@ class TestAssetInjection:
         config = json.loads(index[start:end])
         assert config["themeDark"] == "dracula"
         assert config["themeLight"] == "github-light"
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_zoom_selectors_in_config(self, app: Sphinx, index: str) -> None:
+        """zoom_id from zoom-enabled diagrams is collected into zoomSelectors (T042)."""
+        marker = 'id="oceanid-config">'
+        start = index.index(marker) + len(marker)
+        end = index.index("</script>", start)
+        config = json.loads(index[start:end])
+        assert "zoomSelectors" in config
+        # test-basic/index.rst has one zoom-enabled diagram
+        assert len(config["zoomSelectors"]) >= 1
+        # Each selector should start with #
+        for selector in config["zoomSelectors"]:
+            assert selector.startswith("#")
