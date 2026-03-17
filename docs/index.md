@@ -168,24 +168,11 @@ All standard `mermaid` directive options (`:name:`, `:align:`, `:caption:`, `:zo
    :zoom:
 ````
 
-(supported-diagram-types)=
-## Supported Diagram Types
-
-| Type | Alias |
-|------|-------|
-| `flowchart` | `graph` |
-| `sequenceDiagram` | |
-| `classDiagram` | |
-| `stateDiagram` | `stateDiagram-v2` |
-| `erDiagram` | |
-| `xychart-beta` | |
-
-Unsupported diagram types produce explicit warnings (or errors via {ref}`oceanid_unsupported_action <conf-oceanid-unsupported-action>`), never silent degradation.
-
 ```{toctree}
 :maxdepth: 2
 :caption: Contents:
 
 install
+supported-diagrams
 configuration
 ```
