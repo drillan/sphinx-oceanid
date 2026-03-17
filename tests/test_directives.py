@@ -44,6 +44,65 @@ class TestMermaidDirective:
         assert "empty content" in warnings.lower()
 
 
+class TestDirectiveOptions:
+    """Tests for directive options: caption, zoom, alt, config, title (T037)."""
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_directive_with_caption_creates_figure(self, app: Sphinx) -> None:
+        """caption option wraps mermaid_node in a figure node."""
+        from docutils.nodes import figure
+
+        app.build()
+        doctree = app.env.get_doctree("index")
+        figures = list(doctree.findall(figure))
+        # At least one figure should exist (the captioned diagram)
+        assert len(figures) >= 1
+        # The figure should contain a mermaid_node
+        mermaid_in_figure = list(figures[0].findall(mermaid_node))
+        assert len(mermaid_in_figure) >= 1
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_directive_with_zoom_sets_zoom_id(self, app: Sphinx) -> None:
+        """zoom option generates a zoom_id on the mermaid_node."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        zoom_nodes = [n for n in nodes if n.get("zoom")]
+        assert len(zoom_nodes) >= 1
+        for n in zoom_nodes:
+            assert n["zoom_id"], "zoom_id must be non-empty when zoom is enabled"
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_directive_with_alt(self, app: Sphinx) -> None:
+        """alt option stores alt text on the mermaid_node."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        alt_nodes = [n for n in nodes if n.get("alt")]
+        assert len(alt_nodes) >= 1
+        assert alt_nodes[0]["alt"] == "Sequence diagram of greeting"
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_directive_with_config_frontmatter(self, app: Sphinx) -> None:
+        """config option injects frontmatter into mermaid code."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        config_nodes = [n for n in nodes if "---" in n["code"]]
+        assert len(config_nodes) >= 1
+        assert "theme: forest" in config_nodes[0]["code"]
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_directive_with_title_frontmatter(self, app: Sphinx) -> None:
+        """title option injects title into mermaid frontmatter."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        title_nodes = [n for n in nodes if "My Diagram Title" in n["code"]]
+        assert len(title_nodes) >= 1
+        assert "---" in title_nodes[0]["code"]
+
+
 class TestUnsupportedActionError:
     """Tests for oceanid_unsupported_action='error' (US4)."""
 

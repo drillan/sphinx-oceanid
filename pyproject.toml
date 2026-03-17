@@ -36,6 +36,7 @@ dev = [
     "ruff",
     "mypy",
     "types-docutils",
+    "types-pyyaml",
     { include-group = "test" },
 ]
 docs = [

@@ -73,11 +73,20 @@ def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
     if ids:
         attrs.append(f'id="{html.escape(ids[0], quote=True)}"')
 
+    # FR-014: alt → aria-label for accessibility
+    alt: str = node.get("alt", "")
+    if alt:
+        attrs.append(f'aria-label="{html.escape(alt, quote=True)}"')
+
     # FR-020: XSS-safe data attribute
     attrs.append(f'data-oceanid-code="{html.escape(code, quote=True)}"')
 
     if node.get("zoom", False):
         attrs.append("data-oceanid-zoom")
+
+    zoom_id: str = node.get("zoom_id", "")
+    if zoom_id and not ids:
+        attrs.insert(1, f'id="{html.escape(zoom_id, quote=True)}"')
 
     self.body.append(f"<div {' '.join(attrs)}>\n")
 
