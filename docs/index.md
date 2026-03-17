@@ -175,4 +175,5 @@ All standard `mermaid` directive options (`:name:`, `:align:`, `:caption:`, `:zo
 install
 supported-diagrams
 configuration
+revealjs
 ```
