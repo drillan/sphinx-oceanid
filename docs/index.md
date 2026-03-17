@@ -1,5 +1,36 @@
 # sphinx-oceanid documentation
 
+## Usage
+
+### Inline diagrams
+
+Write Mermaid code directly in the directive body:
+
+````rst
+.. mermaid::
+
+   flowchart LR
+     A --> B --> C
+````
+
+### External files
+
+Reference an external `.mmd` file instead of inline code. The path is relative to the Sphinx source directory.
+
+````rst
+.. mermaid:: diagrams/flow.mmd
+````
+
+All directive options work with external files:
+
+````rst
+.. mermaid:: diagrams/flow.mmd
+   :caption: System architecture
+   :zoom:
+````
+
+If the file is not found, the build produces an error with the file path and source location.
+
 ## Directive Options
 
 The `mermaid` directive supports the following options:

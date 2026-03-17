@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import yaml
@@ -27,7 +28,7 @@ class Mermaid(SphinxDirective):
 
     has_content = True
     required_arguments = 0
-    optional_arguments = 0
+    optional_arguments = 1
     option_spec = {  # noqa: RUF012
         "name": directives.unchanged,
         "align": lambda arg: directives.choice(arg, ("left", "center", "right")),
@@ -84,8 +85,32 @@ class Mermaid(SphinxDirective):
         return [node]
 
     def _get_code(self) -> str:
-        """Get Mermaid code from directive content."""
+        """Get Mermaid code from directive argument (external file) or inline content."""
+        if self.arguments:
+            return self._load_external_code(self.arguments[0])
         return "\n".join(self.content)
+
+    def _load_external_code(self, filepath: str) -> str:
+        """Load Mermaid code from an external file.
+
+        Args:
+            filepath: Path relative to the Sphinx source directory.
+
+        Returns:
+            File content as a string.
+
+        Raises:
+            ExtensionError: If the file is not found.
+        """
+        source_dir = Path(self.env.srcdir)
+        target = source_dir / filepath
+        try:
+            return target.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            raise ExtensionError(
+                f"External Mermaid file not found: {filepath}",
+                modname="sphinx_oceanid",
+            ) from None
 
     def _apply_mermaid_frontmatter(self, code: str) -> str:
         """Inject :config: and :title: options into Mermaid frontmatter."""
