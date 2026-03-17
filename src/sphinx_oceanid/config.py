@@ -77,6 +77,23 @@ def register_config_values(app: Sphinx) -> None:
         )
 
 
+VALID_UNSUPPORTED_ACTIONS: frozenset[str] = frozenset({"warning", "error"})
+
+
+def validate_config(app: Sphinx, config: object) -> None:
+    """Validate config values at config-inited event.
+
+    Raises:
+        ExtensionError: If ``oceanid_unsupported_action`` is not a valid value.
+    """
+    from sphinx.errors import ExtensionError
+
+    action: str = config.oceanid_unsupported_action  # type: ignore[attr-defined]
+    if action not in VALID_UNSUPPORTED_ACTIONS:
+        valid_list = ", ".join(sorted(VALID_UNSUPPORTED_ACTIONS))
+        raise ExtensionError(f'Invalid oceanid_unsupported_action: "{action}". Valid values: {valid_list}.')
+
+
 def resolve_js_url(config: object) -> str:
     """Resolve beautiful-mermaid JS URL from Sphinx config.
 

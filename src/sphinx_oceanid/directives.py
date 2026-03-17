@@ -5,9 +5,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from docutils.parsers.rst import directives
+from sphinx.errors import ExtensionError
 from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
 
+from .config import SUPPORTED_DIAGRAM_TYPES
 from .diagram_types import extract_diagram_type, is_supported_diagram
 from .nodes import mermaid_node
 
@@ -41,6 +43,14 @@ class Mermaid(SphinxDirective):
 
         diagram_type = extract_diagram_type(code)
         is_supported = is_supported_diagram(diagram_type)
+
+        if not is_supported and self.config.oceanid_unsupported_action == "error":
+            supported_list = ", ".join(sorted(SUPPORTED_DIAGRAM_TYPES))
+            raise ExtensionError(
+                f'Diagram type "{diagram_type or "unknown"}" '
+                f"is not supported by sphinx-oceanid. "
+                f"Supported types: {supported_list}."
+            )
 
         node = mermaid_node()
         node["code"] = code

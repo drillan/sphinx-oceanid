@@ -19,7 +19,7 @@ def setup(app: Sphinx) -> dict[str, bool | str]:
     Registers nodes, directives, config values, and event handlers.
     """
     from .assets import install_assets
-    from .config import register_config_values
+    from .config import register_config_values, validate_config
     from .directives import Mermaid
     from .nodes import mermaid_node
     from .visitors import html_depart_mermaid, html_visit_mermaid
@@ -27,6 +27,7 @@ def setup(app: Sphinx) -> dict[str, bool | str]:
     register_config_values(app)
     app.add_node(mermaid_node, html=(html_visit_mermaid, html_depart_mermaid))
     app.add_directive("mermaid", Mermaid)
+    app.connect("config-inited", validate_config)
     app.connect("html-page-context", install_assets)
     app.connect("builder-inited", _register_static_path)
 
