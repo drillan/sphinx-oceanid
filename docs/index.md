@@ -168,41 +168,24 @@ All standard `mermaid` directive options (`:name:`, `:align:`, `:caption:`, `:zo
    :zoom:
 ````
 
-## Configuration
+(supported-diagram-types)=
+## Supported Diagram Types
 
-### Zoom
+| Type | Alias |
+|------|-------|
+| `flowchart` | `graph` |
+| `sequenceDiagram` | |
+| `classDiagram` | |
+| `stateDiagram` | `stateDiagram-v2` |
+| `erDiagram` | |
+| `xychart-beta` | |
 
-Enable pan-and-zoom interaction on all diagrams globally:
-
-```python
-# conf.py
-oceanid_zoom = True
-```
-
-When enabled globally, all diagrams get zoom controls: mouse wheel to zoom in/out, drag to pan, double-click to reset, and pinch to zoom on touch devices. Uses native Pointer Events and SVG viewBox manipulation — no d3.js dependency.
-
-To enable zoom on individual diagrams only, use the `:zoom:` directive option instead.
-
-### Fullscreen Modal
-
-Enable a fullscreen button on all diagrams:
-
-```python
-# conf.py
-oceanid_fullscreen = True
-```
-
-When enabled, each rendered diagram displays a fullscreen button. Clicking it opens the diagram in a viewport-sized modal overlay. Close with Escape key, clicking outside, or the close button.
-
-Customize the button appearance:
-
-```python
-# conf.py
-oceanid_fullscreen_button = "⛶"        # Button character (default: ⛶)
-oceanid_fullscreen_button_opacity = 50   # Button opacity 0-100 (default: 50)
-```
+Unsupported diagram types produce explicit warnings (or errors via {ref}`oceanid_unsupported_action <conf-oceanid-unsupported-action>`), never silent degradation.
 
 ```{toctree}
 :maxdepth: 2
 :caption: Contents:
+
+install
+configuration
 ```
