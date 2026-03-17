@@ -114,6 +114,60 @@ All options can be used together:
      Input --> Process --> Output
 ````
 
+## Auto-generated Class Diagrams
+
+The `autoclasstree` directive generates Mermaid class diagrams from Python class hierarchies automatically.
+
+### Basic usage
+
+Specify one or more fully qualified class or module names as arguments:
+
+````rst
+.. autoclasstree:: mypackage.MyClass
+````
+
+This generates a `classDiagram` showing the direct inheritance relationships of `MyClass`.
+
+### Options
+
+#### `:full:` — Full hierarchy
+
+Traverse the full inheritance tree up to (but excluding) `object`:
+
+````rst
+.. autoclasstree:: mypackage.MyClass
+   :full:
+````
+
+#### `:strict:` — Strict module filtering
+
+Only include classes defined in the specified module (exclude re-exported classes):
+
+````rst
+.. autoclasstree:: mypackage.models
+   :strict:
+````
+
+#### `:namespace:` — Namespace filtering
+
+Only include base classes whose module starts with the given namespace:
+
+````rst
+.. autoclasstree:: mypackage.MyClass
+   :full:
+   :namespace: mypackage
+````
+
+All standard `mermaid` directive options (`:name:`, `:align:`, `:caption:`, `:zoom:`, `:alt:`, `:config:`, `:title:`) are also available:
+
+````rst
+.. autoclasstree:: mypackage.MyClass
+   :full:
+   :caption: Class hierarchy of MyClass
+   :align: center
+   :zoom:
+````
+
 ## Configuration
 
 ### Zoom

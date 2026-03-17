@@ -135,6 +135,53 @@ class TestUnsupportedActionError:
             app.build()
 
 
+class TestAutoclasstreeDirectiveErrors:
+    """Tests for autoclasstree error handling."""
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree-invalid")
+    def test_autoclasstree_invalid_class_raises(self, app: Sphinx) -> None:
+        """autoclasstree with invalid class name raises ExtensionError."""
+        with pytest.raises(ExtensionError):
+            app.build()
+
+
+class TestAutoclasstreeDirective:
+    """Tests for autoclasstree directive (US9, T054)."""
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree")
+    def test_autoclasstree_creates_node(self, app: Sphinx) -> None:
+        """autoclasstree directive creates mermaid_node in doctree."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        assert len(nodes) >= 1
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree")
+    def test_autoclasstree_generates_classdiagram(self, app: Sphinx) -> None:
+        """autoclasstree directive generates classDiagram code."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        assert len(nodes) >= 1
+        assert nodes[0]["code"].startswith("classDiagram\n")
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree")
+    def test_autoclasstree_diagram_type_is_classdiagram(self, app: Sphinx) -> None:
+        """autoclasstree directive sets diagram_type to classDiagram."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        assert nodes[0]["diagram_type"] == "classDiagram"
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree")
+    def test_autoclasstree_is_supported(self, app: Sphinx) -> None:
+        """autoclasstree generates a supported diagram type."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        assert nodes[0]["is_supported"] is True
+
+
 class TestExternalFile:
     """Tests for external .mmd file support (US7, T043)."""
 
