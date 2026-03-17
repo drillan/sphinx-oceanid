@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+# Re-export a class from another module to test strict filtering
+from pathlib import PurePath  # noqa: F401
+
 import pytest
 
 from sphinx_oceanid.autoclassdiag import class_diagram, get_classes
@@ -60,12 +63,17 @@ class TestGetClasses:
         assert "Dog" in class_names
 
     def test_get_classes_strict_module(self) -> None:
-        """strict=True only yields classes defined in the module itself."""
-        classes = list(get_classes(__name__, strict=True))
-        class_names = {c.__name__ for c in classes}
-        # All test classes are defined in this module
-        assert "Animal" in class_names
-        assert "Dog" in class_names
+        """strict=True excludes re-exported classes from other modules."""
+        classes_strict = list(get_classes(__name__, strict=True))
+        classes_all = list(get_classes(__name__, strict=False))
+        strict_names = {c.__name__ for c in classes_strict}
+        all_names = {c.__name__ for c in classes_all}
+        # PurePath is re-exported from pathlib, so strict should exclude it
+        assert "PurePath" not in strict_names
+        assert "PurePath" in all_names
+        # Classes defined in this module should be present in both
+        assert "Animal" in strict_names
+        assert "Dog" in strict_names
 
     def test_get_classes_not_found_raises(self) -> None:
         """Non-existent class/module raises OceanidError."""

@@ -72,15 +72,15 @@ def class_diagram(
         Mermaid classDiagram notation string, or empty string if no
         inheritance relationships are found.
     """
-    inheritances: set[tuple[str, str]] = set()
+    inheritances: set[tuple[type, type]] = set()
 
     def _get_tree(cls: type) -> None:
         for base in cls.__bases__:
-            if base.__name__ == "object":
+            if base is object:
                 continue
             if namespace and not base.__module__.startswith(namespace):
                 continue
-            inheritances.add((base.__name__, cls.__name__))
+            inheritances.add((base, cls))
             if full:
                 _get_tree(base)
 
@@ -90,5 +90,20 @@ def class_diagram(
     if not inheritances:
         return ""
 
-    lines = sorted(f"  {parent} <|-- {child}" for parent, child in inheritances)
+    # Collect all classes and detect short-name collisions
+    all_classes: set[type] = set()
+    for parent, child in inheritances:
+        all_classes.add(parent)
+        all_classes.add(child)
+
+    name_groups: dict[str, list[type]] = {}
+    for cls in all_classes:
+        name_groups.setdefault(cls.__name__, []).append(cls)
+
+    def _mermaid_name(cls: type) -> str:
+        if len(name_groups[cls.__name__]) > 1:
+            return f"`{cls.__module__}.{cls.__name__}`"
+        return cls.__name__
+
+    lines = sorted(f"  {_mermaid_name(parent)} <|-- {_mermaid_name(child)}" for parent, child in inheritances)
     return "classDiagram\n" + "\n".join(lines)

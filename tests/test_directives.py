@@ -135,6 +135,16 @@ class TestUnsupportedActionError:
             app.build()
 
 
+class TestAutoclasstreeDirectiveErrors:
+    """Tests for autoclasstree error handling."""
+
+    @pytest.mark.sphinx("html", testroot="autoclasstree-invalid")
+    def test_autoclasstree_invalid_class_raises(self, app: Sphinx) -> None:
+        """autoclasstree with invalid class name raises ExtensionError."""
+        with pytest.raises(ExtensionError):
+            app.build()
+
+
 class TestAutoclasstreeDirective:
     """Tests for autoclasstree directive (US9, T054)."""
 

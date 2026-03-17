@@ -45,7 +45,7 @@ class Mermaid(SphinxDirective):
         code = self._get_code()
         if not code.strip():
             logger.warning(
-                "mermaid directive has empty content",
+                self._empty_content_warning(),
                 location=(self.env.docname, self.lineno),
             )
             return []
@@ -84,6 +84,10 @@ class Mermaid(SphinxDirective):
             return self._figure_wrapper(node)
 
         return [node]
+
+    def _empty_content_warning(self) -> str:
+        """Return warning message for empty directive content."""
+        return "mermaid directive has empty content"
 
     def _get_code(self) -> str:
         """Get Mermaid code from directive argument (external file) or inline content."""
@@ -182,6 +186,10 @@ class MermaidClassDiagram(Mermaid):
         "strict": directives.flag,
         "namespace": directives.unchanged,
     }
+
+    def _empty_content_warning(self) -> str:
+        """Return warning message when no inheritance relationships are found."""
+        return f"autoclasstree: no inheritance relationships found for {', '.join(self.arguments)}"
 
     def _get_code(self) -> str:
         """Generate Mermaid classDiagram code from Python class hierarchies."""
