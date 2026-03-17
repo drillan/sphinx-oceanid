@@ -27,6 +27,13 @@ sphinx-oceanid uses [beautiful-mermaid](https://github.com/niccolozy/beautiful-m
      B -->|No| D[Cancel]
 ````
 
+```{mermaid}
+flowchart LR
+  A[Start] --> B{Decision}
+  B -->|Yes| C[OK]
+  B -->|No| D[Cancel]
+```
+
 The `graph` keyword is an alias for `flowchart`:
 
 ````rst
@@ -36,6 +43,12 @@ The `graph` keyword is an alias for `flowchart`:
      A --> B
      B --> C
 ````
+
+```{mermaid}
+graph TD
+  A --> B
+  B --> C
+```
 
 ### sequenceDiagram
 
@@ -51,6 +64,16 @@ The `graph` keyword is an alias for `flowchart`:
      Bob-->>Alice: Fine, thanks!
 ````
 
+```{mermaid}
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>Bob: Hello Bob
+  Bob-->>Alice: Hi Alice
+  Alice->>Bob: How are you?
+  Bob-->>Alice: Fine, thanks!
+```
+
 ### classDiagram
 
 ````rst
@@ -64,6 +87,16 @@ The `graph` keyword is an alias for `flowchart`:
      Duck : +swim()
      Fish : +swim()
 ````
+
+```{mermaid}
+classDiagram
+  Animal <|-- Duck
+  Animal <|-- Fish
+  Animal : +String name
+  Animal : +move()
+  Duck : +swim()
+  Fish : +swim()
+```
 
 You can also auto-generate class diagrams from Python code using the `autoclasstree` directive. See {doc}`index` for details.
 
@@ -79,6 +112,14 @@ You can also auto-generate class diagrams from Python code using the `autoclasst
      Active --> [*] : quit
 ````
 
+```{mermaid}
+stateDiagram-v2
+  [*] --> Active
+  Active --> Inactive : timeout
+  Inactive --> Active : input
+  Active --> [*] : quit
+```
+
 Both `stateDiagram` and `stateDiagram-v2` keywords are supported.
 
 ### erDiagram
@@ -92,6 +133,13 @@ Both `stateDiagram` and `stateDiagram-v2` keywords are supported.
      PRODUCT ||--o{ LINE-ITEM : "is in"
 ````
 
+```{mermaid}
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ LINE-ITEM : contains
+  PRODUCT ||--o{ LINE-ITEM : "is in"
+```
+
 ### xychart-beta
 
 ````rst
@@ -104,6 +152,15 @@ Both `stateDiagram` and `stateDiagram-v2` keywords are supported.
      bar [1200, 2400, 1800, 3600, 4200]
      line [1200, 2400, 1800, 3600, 4200]
 ````
+
+```{mermaid}
+xychart-beta
+  title "Monthly Sales"
+  x-axis [Jan, Feb, Mar, Apr, May]
+  y-axis "Revenue (USD)" 0 --> 5000
+  bar [1200, 2400, 1800, 3600, 4200]
+  line [1200, 2400, 1800, 3600, 4200]
+```
 
 ## Unsupported diagram types
 
