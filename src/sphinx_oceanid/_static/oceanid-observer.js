@@ -16,7 +16,7 @@
  * @param {Function} renderFn - beautiful-mermaid renderMermaidSVG function
  * @param {object} themeColors - DiagramColors object
  */
-const renderSingleDiagram = (el, renderFn, themeColors) => {
+export const renderSingleDiagram = (el, renderFn, themeColors) => {
   try {
     const code = el.getAttribute("data-oceanid-code");
     if (!code) {

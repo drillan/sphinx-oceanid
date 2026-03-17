@@ -61,9 +61,8 @@ const main = async () => {
 
     const themeColors = resolveThemeColors(config, THEMES);
 
-    const { renderVisibleDiagrams, setupLazyRendering } = await import(
-      "./oceanid-observer.js"
-    );
+    const { renderVisibleDiagrams, setupLazyRendering, renderSingleDiagram } =
+      await import("./oceanid-observer.js");
 
     const diagrams = document.querySelectorAll(".oceanid-diagram");
     if (diagrams.length === 0) {
@@ -74,6 +73,20 @@ const main = async () => {
 
     renderVisibleDiagrams(visible, renderFn, themeColors);
     setupLazyRendering(hidden, renderFn, themeColors);
+
+    if (config.revealjs || typeof Reveal !== "undefined") {
+      Reveal.addEventListener?.("slidechanged", () => {
+        document
+          .querySelectorAll(
+            '.oceanid-diagram:not([data-oceanid-rendered="true"])'
+          )
+          .forEach((el) => {
+            if (el.offsetParent !== null) {
+              renderSingleDiagram(el, renderFn, themeColors);
+            }
+          });
+      });
+    }
 
     observeThemeChanges(config, THEMES, renderFn);
   } catch (err) {
