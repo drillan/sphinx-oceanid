@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import json
 import re
 from typing import TYPE_CHECKING
 
@@ -128,3 +129,103 @@ class TestMarkdownIntegration:
         assert "data-oceanid-code=" in first_div
 
         assert "<noscript>" in index
+
+
+def _extract_config_json(html_content: str) -> dict[str, object]:
+    """Extract the oceanid-config JSON from HTML content."""
+    match = re.search(
+        r'<script[^>]*id="oceanid-config"[^>]*>(.*?)</script>',
+        html_content,
+        re.DOTALL,
+    )
+    assert match, "oceanid-config script element not found"
+    result: dict[str, object] = json.loads(match.group(1))
+    return result
+
+
+class TestFullscreenIntegration:
+    """Integration tests for fullscreen modal (US8, FR-018)."""
+
+    @pytest.mark.sphinx("html", testroot="fullscreen")
+    def test_fullscreen_enabled_build_succeeds(self, app: Sphinx, build_all: None) -> None:
+        """HTML build succeeds with fullscreen enabled."""
+        assert (app.outdir / "index.html").exists()
+
+    @pytest.mark.sphinx("html", testroot="fullscreen")
+    def test_fullscreen_enabled_config_json(self, app: Sphinx, index: str) -> None:
+        """Config JSON contains fullscreen: true when enabled."""
+        config = _extract_config_json(index)
+        assert config["fullscreen"] is True
+
+    @pytest.mark.sphinx("html", testroot="fullscreen")
+    def test_fullscreen_enabled_has_button_config(self, app: Sphinx, index: str) -> None:
+        """Config JSON contains fullscreen button settings."""
+        config = _extract_config_json(index)
+        assert config["fullscreenButton"] == "\u26f6"
+        assert config["fullscreenButtonOpacity"] == 50
+
+    @pytest.mark.sphinx(
+        "html",
+        testroot="fullscreen",
+        confoverrides={"oceanid_fullscreen_button": "F", "oceanid_fullscreen_button_opacity": 80},
+    )
+    def test_fullscreen_custom_button_config(self, app: Sphinx, index: str) -> None:
+        """Config JSON reflects custom fullscreen button settings."""
+        config = _extract_config_json(index)
+        assert config["fullscreenButton"] == "F"
+        assert config["fullscreenButtonOpacity"] == 80
+
+    @pytest.mark.sphinx("html", testroot="basic", confoverrides={"oceanid_fullscreen": False})
+    def test_fullscreen_disabled_config_json(self, app: Sphinx, index: str) -> None:
+        """Config JSON contains fullscreen: false when disabled."""
+        config = _extract_config_json(index)
+        assert config["fullscreen"] is False
+
+    @pytest.mark.sphinx("html", testroot="fullscreen")
+    def test_fullscreen_js_referenced(self, app: Sphinx, index: str) -> None:
+        """Fullscreen JS module file exists in built output."""
+        assert (app.outdir / "_static" / "oceanid-fullscreen.js").exists()
+
+    @pytest.mark.sphinx("html", testroot="fullscreen")
+    def test_fullscreen_diagram_present(self, app: Sphinx, index: str) -> None:
+        """Fullscreen-enabled page still contains oceanid-diagram elements."""
+        assert "oceanid-diagram" in index
+
+
+class TestZoomIntegration:
+    """Integration tests for zoom feature (US8, FR-017)."""
+
+    @pytest.mark.sphinx("html", testroot="zoom")
+    def test_zoom_enabled_build_succeeds(self, app: Sphinx, build_all: None) -> None:
+        """HTML build succeeds with zoom enabled."""
+        assert (app.outdir / "index.html").exists()
+
+    @pytest.mark.sphinx("html", testroot="zoom")
+    def test_zoom_enabled_config_json(self, app: Sphinx, index: str) -> None:
+        """Config JSON contains zoom: true when enabled globally."""
+        config = _extract_config_json(index)
+        assert config["zoom"] is True
+
+    @pytest.mark.sphinx("html", testroot="basic", confoverrides={"oceanid_zoom": False})
+    def test_zoom_disabled_config_json(self, app: Sphinx, index: str) -> None:
+        """Config JSON contains zoom: false when disabled."""
+        config = _extract_config_json(index)
+        assert config["zoom"] is False
+
+    @pytest.mark.sphinx("html", testroot="zoom")
+    def test_zoom_js_referenced(self, app: Sphinx, index: str) -> None:
+        """Zoom JS module file exists in built output."""
+        assert (app.outdir / "_static" / "oceanid-zoom.js").exists()
+
+    @pytest.mark.sphinx("html", testroot="zoom")
+    def test_zoom_diagram_has_data_attribute(self, app: Sphinx, index: str) -> None:
+        """With global zoom, diagrams get data-oceanid-zoom attribute."""
+        assert "data-oceanid-zoom" in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_zoom_per_directive_selectors(self, app: Sphinx, index: str) -> None:
+        """Per-directive :zoom: option populates zoomSelectors in config JSON."""
+        config = _extract_config_json(index)
+        zoom_selectors = config["zoomSelectors"]
+        assert isinstance(zoom_selectors, list)
+        assert len(zoom_selectors) >= 1

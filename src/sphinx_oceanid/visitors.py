@@ -87,7 +87,8 @@ def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
     # FR-020: XSS-safe data attribute
     attrs.append(f'data-oceanid-code="{html.escape(code, quote=True)}"')
 
-    if node.get("zoom", False):
+    zoom_globally = bool(self.config.oceanid_zoom)
+    if node.get("zoom", False) or zoom_globally:
         attrs.append("data-oceanid-zoom")
 
     zoom_id: str = node.get("zoom_id", "")
