@@ -6,7 +6,6 @@ import json
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import yaml
 from docutils import nodes as docutils_nodes
 from docutils.parsers.rst import directives
 from sphinx.errors import ExtensionError
@@ -50,7 +49,8 @@ class Mermaid(SphinxDirective):
             )
             return []
 
-        code = self._apply_mermaid_frontmatter(code)
+        mermaid_config = self._parse_mermaid_config()
+        mermaid_title = self.options.get("title", "")
 
         diagram_type = extract_diagram_type(code)
         is_supported = is_supported_diagram(diagram_type)
@@ -77,6 +77,8 @@ class Mermaid(SphinxDirective):
         node["alt"] = self.options.get("alt", "")
         node["zoom"] = zoom_enabled
         node["zoom_id"] = zoom_id
+        node["mermaid_config"] = mermaid_config
+        node["mermaid_title"] = mermaid_title
 
         self.add_name(node)
 
@@ -117,39 +119,28 @@ class Mermaid(SphinxDirective):
                 modname="sphinx_oceanid",
             ) from None
 
-    def _apply_mermaid_frontmatter(self, code: str) -> str:
-        """Inject :config: and :title: options into Mermaid frontmatter."""
-        config_dict: dict[str, object] = {}
+    def _parse_mermaid_config(self) -> dict[str, object]:
+        """Parse :config: option into a dict.
 
-        if "config" in self.options:
-            try:
-                parsed = json.loads(self.options["config"])
-            except json.JSONDecodeError as exc:
-                logger.warning(
-                    "Invalid JSON in :config: option: %s",
-                    exc,
-                    location=(self.env.docname, self.lineno),
-                )
-                parsed = {}
-            if isinstance(parsed, dict):
-                config_dict.update(parsed)
+        Returns:
+            Parsed config dict, or empty dict if no config or invalid JSON.
+        """
+        if "config" not in self.options:
+            return {}
 
-        frontmatter: dict[str, object] = {}
-        if config_dict:
-            frontmatter["config"] = config_dict
-        if "title" in self.options:
-            frontmatter["title"] = self.options["title"]
+        try:
+            parsed = json.loads(self.options["config"])
+        except json.JSONDecodeError as exc:
+            logger.warning(
+                "Invalid JSON in :config: option: %s",
+                exc,
+                location=(self.env.docname, self.lineno),
+            )
+            return {}
 
-        if not frontmatter:
-            return code
-
-        frontmatter_yaml = yaml.dump(
-            frontmatter,
-            default_flow_style=False,
-            allow_unicode=True,
-        ).rstrip("\n")
-
-        return f"---\n{frontmatter_yaml}\n---\n{code}"
+        if isinstance(parsed, dict):
+            return parsed
+        return {}
 
     def _figure_wrapper(self, node: mermaid_node) -> list[nodes.Node]:
         """Wrap mermaid_node in a figure with figcaption."""

@@ -28,8 +28,6 @@ if TYPE_CHECKING:
 RENDER_CHECK_SCRIPT = Path(__file__).parent / "helpers" / "render_check.mjs"
 NODE_TIMEOUT_SECONDS = 30
 
-_FRONTMATTER_PREFIX = "---\n"
-
 
 def _node_rendering_available() -> bool:
     """Check if Node.js and beautiful-mermaid are available."""
@@ -58,16 +56,16 @@ def _extract_oceanid_codes(html_content: str) -> list[str]:
     return [html.unescape(v) for v in raw_values]
 
 
-def _has_frontmatter(code: str) -> bool:
-    """Check if Mermaid code contains YAML frontmatter (---...---)."""
-    return code.startswith(_FRONTMATTER_PREFIX)
-
-
-def _partition_codes(codes: list[str]) -> tuple[list[str], list[str]]:
-    """Split codes into (plain, frontmatter) lists."""
-    plain = [c for c in codes if not _has_frontmatter(c)]
-    frontmatter = [c for c in codes if _has_frontmatter(c)]
-    return plain, frontmatter
+def _extract_config_title_codes(html_content: str) -> list[str]:
+    """Extract data-oceanid-code from diagrams that have config or title attributes."""
+    codes: list[str] = []
+    for match in re.finditer(r"<div\s[^>]*class=\"oceanid-diagram[^\"]*\"[^>]*>", html_content):
+        tag = match.group(0)
+        if "data-oceanid-config" in tag or "data-oceanid-title" in tag:
+            code_match = re.search(r'data-oceanid-code="([^"]*)"', tag)
+            if code_match:
+                codes.append(html.unescape(code_match.group(1)))
+    return codes
 
 
 def _render_with_node(codes: list[str]) -> list[dict[str, object]]:
@@ -111,21 +109,17 @@ class TestDocsRendering:
         codes = _extract_oceanid_codes(content)
         _assert_all_render_successfully(codes)
 
-    def test_index_page_plain_diagrams_render(self, docs_build: Path) -> None:
-        """Diagrams without frontmatter on index.html render to SVG."""
+    def test_index_page_all_diagrams_render(self, docs_build: Path) -> None:
+        """All diagrams on index.html render to SVG."""
         content = (docs_build / "index.html").read_text()
-        plain, _frontmatter = _partition_codes(_extract_oceanid_codes(content))
-        _assert_all_render_successfully(plain)
+        codes = _extract_oceanid_codes(content)
+        _assert_all_render_successfully(codes)
 
-    @pytest.mark.xfail(
-        reason="beautiful-mermaid does not support YAML frontmatter (issue #45)",
-        strict=True,
-    )
     def test_index_page_frontmatter_diagrams_render(self, docs_build: Path) -> None:
-        """Diagrams with :config:/:title: frontmatter on index.html render to SVG."""
+        """Diagrams with :config:/:title: options on index.html render to SVG."""
         content = (docs_build / "index.html").read_text()
-        _plain, frontmatter = _partition_codes(_extract_oceanid_codes(content))
-        _assert_all_render_successfully(frontmatter)
+        codes = _extract_config_title_codes(content)
+        _assert_all_render_successfully(codes)
 
 
 # ---------------------------------------------------------------------------
@@ -137,20 +131,16 @@ class TestTestRootRendering:
     """Verify that diagrams in test root fixtures render to valid SVG."""
 
     @pytest.mark.sphinx("html", testroot="basic")
-    def test_basic_plain_diagrams_render(self, app: Sphinx, index: str) -> None:
-        """Diagrams without frontmatter in test-basic render to SVG."""
-        plain, _frontmatter = _partition_codes(_extract_oceanid_codes(index))
-        _assert_all_render_successfully(plain)
+    def test_basic_all_diagrams_render(self, app: Sphinx, index: str) -> None:
+        """All diagrams in test-basic render to SVG."""
+        codes = _extract_oceanid_codes(index)
+        _assert_all_render_successfully(codes)
 
-    @pytest.mark.xfail(
-        reason="beautiful-mermaid does not support YAML frontmatter (issue #45)",
-        strict=True,
-    )
     @pytest.mark.sphinx("html", testroot="basic")
     def test_basic_frontmatter_diagrams_render(self, app: Sphinx, index: str) -> None:
-        """Diagrams with :config:/:title: frontmatter in test-basic render to SVG."""
-        _plain, frontmatter = _partition_codes(_extract_oceanid_codes(index))
-        _assert_all_render_successfully(frontmatter)
+        """Diagrams with :config:/:title: options in test-basic render to SVG."""
+        codes = _extract_config_title_codes(index)
+        _assert_all_render_successfully(codes)
 
     @pytest.mark.sphinx("html", testroot="basic")
     def test_basic_zoom_page_renders(self, app: Sphinx, build_all: None) -> None:

@@ -62,15 +62,26 @@ class TestDirectiveOptionHtml:
         assert "My caption text" in index
 
     @pytest.mark.sphinx("html", testroot="basic")
-    def test_config_frontmatter_in_code(self, app: Sphinx, index: str) -> None:
-        """config option injects frontmatter into data-oceanid-code."""
-        # The frontmatter with theme: forest should be in the escaped code attribute
-        assert "theme: forest" in index
+    def test_config_data_attribute(self, app: Sphinx, index: str) -> None:
+        """config option produces data-oceanid-config attribute in HTML."""
+        expected = 'data-oceanid-config="{&quot;theme&quot;: &quot;forest&quot;}"'
+        assert expected in index
 
     @pytest.mark.sphinx("html", testroot="basic")
-    def test_title_frontmatter_in_code(self, app: Sphinx, index: str) -> None:
-        """title option injects title frontmatter into data-oceanid-code."""
-        assert "My Diagram Title" in index
+    def test_title_data_attribute(self, app: Sphinx, index: str) -> None:
+        """title option produces data-oceanid-title attribute in HTML."""
+        assert 'data-oceanid-title="My Diagram Title"' in index
+
+    @pytest.mark.sphinx("html", testroot="basic")
+    def test_config_title_not_in_code(self, app: Sphinx, index: str) -> None:
+        """data-oceanid-code must not contain YAML frontmatter."""
+        import html as html_mod
+        import re
+
+        raw_codes = re.findall(r'data-oceanid-code="([^"]*)"', index)
+        codes = [html_mod.unescape(v) for v in raw_codes]
+        for code in codes:
+            assert not code.startswith("---\n"), f"Frontmatter found in code: {code[:80]}"
 
 
 class TestUnsupportedDiagram:
