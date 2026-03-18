@@ -2,6 +2,30 @@
 
 ## Common Issues
 
+### Diagrams not rendering when opening HTML files directly
+
+**Symptom**: Diagrams show the raw Mermaid source code when opening built HTML via `file://` in the browser. The browser developer console shows a CORS error.
+
+**Cause**: `oceanid-renderer.js` dynamically imports beautiful-mermaid from the CDN using `await import(...)`. Browsers block cross-origin ES module imports from `file://` to `https://` due to the Same-Origin Policy. This also applies when using `oceanid_local_js` with a local bundle — `file://` blocks ES module `import()` regardless of the source location.
+
+This is a browser security restriction, not a sphinx-oceanid bug.
+
+**Solution**: Serve the documentation via HTTP instead of opening files directly.
+
+Using sphinx-autobuild (recommended for active editing):
+
+```bash
+make livehtml
+```
+
+Using Python's built-in HTTP server (no extra dependencies):
+
+```bash
+make serve
+```
+
+See {doc}`install` for setup instructions and Makefile snippets.
+
 ### CDN unreachable
 
 **Symptom**: Diagrams show the raw Mermaid source code instead of rendered SVG.

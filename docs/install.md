@@ -44,3 +44,45 @@ By default, sphinx-oceanid loads beautiful-mermaid from the [esm.sh](https://esm
    ```
 
 When `oceanid_local_js` is set, the CDN URL is not used.
+
+## Previewing documentation locally
+
+sphinx-oceanid uses ES module dynamic imports to load beautiful-mermaid. Browsers block these imports when HTML files are opened via the `file://` protocol (CORS restriction). **You must serve the documentation via HTTP to see rendered diagrams locally.**
+
+### Quick start: `make serve`
+
+Add these targets to your project's `docs/Makefile`:
+
+````makefile
+.PHONY: serve livehtml
+
+PORT ?= 8000
+
+serve: html
+	@echo "Serving at http://localhost:$(PORT) — press Ctrl+C to stop"
+	python3 -m http.server -d $(BUILDDIR)/html $(PORT)
+
+livehtml:
+	sphinx-autobuild "$(SOURCEDIR)" "$(BUILDDIR)/html" $(SPHINXOPTS) $(O)
+````
+
+- **`make serve`** — Build HTML and start a static server. No extra dependencies. Requires manual rebuild after changes.
+- **`make livehtml`** — Auto-rebuild on file changes with live browser reload. Requires [sphinx-autobuild](https://github.com/sphinx-doc/sphinx-autobuild).
+
+### Installing sphinx-autobuild
+
+```bash
+pip install sphinx-oceanid[preview]
+```
+
+Or install sphinx-autobuild directly:
+
+```bash
+pip install sphinx-autobuild
+```
+
+### Changing the port
+
+```bash
+make serve PORT=9000
+```
