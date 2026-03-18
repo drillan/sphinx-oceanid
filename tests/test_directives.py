@@ -83,24 +83,28 @@ class TestDirectiveOptions:
         assert alt_nodes[0]["alt"] == "Sequence diagram of greeting"
 
     @pytest.mark.sphinx("html", testroot="basic")
-    def test_directive_with_config_frontmatter(self, app: Sphinx) -> None:
-        """config option injects frontmatter into mermaid code."""
+    def test_directive_with_config_stores_node_attribute(self, app: Sphinx) -> None:
+        """config option stores parsed config dict as node attribute, not frontmatter."""
         app.build()
         doctree = app.env.get_doctree("index")
         nodes = list(doctree.findall(mermaid_node))
-        config_nodes = [n for n in nodes if "---" in n["code"]]
+        config_nodes = [n for n in nodes if n.get("mermaid_config")]
         assert len(config_nodes) >= 1
-        assert "theme: forest" in config_nodes[0]["code"]
+        assert config_nodes[0]["mermaid_config"] == {"theme": "forest"}
+        # Code must NOT contain frontmatter
+        assert "---" not in config_nodes[0]["code"]
 
     @pytest.mark.sphinx("html", testroot="basic")
-    def test_directive_with_title_frontmatter(self, app: Sphinx) -> None:
-        """title option injects title into mermaid frontmatter."""
+    def test_directive_with_title_stores_node_attribute(self, app: Sphinx) -> None:
+        """title option stores title string as node attribute, not frontmatter."""
         app.build()
         doctree = app.env.get_doctree("index")
         nodes = list(doctree.findall(mermaid_node))
-        title_nodes = [n for n in nodes if "My Diagram Title" in n["code"]]
+        title_nodes = [n for n in nodes if n.get("mermaid_title")]
         assert len(title_nodes) >= 1
-        assert "---" in title_nodes[0]["code"]
+        assert title_nodes[0]["mermaid_title"] == "My Diagram Title"
+        # Code must NOT contain frontmatter
+        assert "---" not in title_nodes[0]["code"]
 
 
 class TestInvalidConfig:

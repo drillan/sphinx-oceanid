@@ -20,7 +20,7 @@ def project() -> dict[str, object]:
 class TestProjectDependencies:
     """Verify runtime dependencies match spec-python.md requirements."""
 
-    @pytest.mark.parametrize("dep", ["sphinx>=7.4", "pyyaml>=6.0"])
+    @pytest.mark.parametrize("dep", ["sphinx>=7.4"])
     def test_dependency_present(self, project: dict[str, object], dep: str) -> None:
         """Each required dependency with version constraint must be in dependencies."""
         deps = project["dependencies"]

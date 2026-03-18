@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import json
 from typing import TYPE_CHECKING
 
 from docutils.nodes import SkipNode
@@ -86,6 +87,15 @@ def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
 
     # FR-020: XSS-safe data attribute
     attrs.append(f'data-oceanid-code="{html.escape(code, quote=True)}"')
+
+    mermaid_config: dict[str, object] = node.get("mermaid_config", {})
+    if mermaid_config:
+        config_json = json.dumps(mermaid_config, ensure_ascii=False)
+        attrs.append(f'data-oceanid-config="{html.escape(config_json, quote=True)}"')
+
+    mermaid_title: str = node.get("mermaid_title", "")
+    if mermaid_title:
+        attrs.append(f'data-oceanid-title="{html.escape(mermaid_title, quote=True)}"')
 
     zoom_globally = bool(self.config.oceanid_zoom)
     if node.get("zoom", False) or zoom_globally:

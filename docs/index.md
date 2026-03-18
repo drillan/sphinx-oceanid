@@ -101,7 +101,7 @@ classDiagram
 
 ### `:config:` — Mermaid configuration
 
-Injects a JSON configuration object into the Mermaid frontmatter. Allows per-diagram theme and rendering options.
+Passes a JSON configuration object as per-diagram Mermaid settings. Stored as a `data-oceanid-config` attribute on the diagram container.
 
 ````rst
 .. mermaid::
@@ -120,7 +120,7 @@ flowchart LR
 
 ### `:title:` — Mermaid native title
 
-Inserts a title into the Mermaid frontmatter. Unlike `:caption:` (which renders outside the diagram as `<figcaption>`), `:title:` is rendered inside the diagram by Mermaid itself.
+Sets a native Mermaid title for the diagram. Stored as a `data-oceanid-title` attribute on the diagram container. Unlike `:caption:` (which renders outside the diagram as `<figcaption>`), `:title:` is metadata intended for diagram-internal rendering.
 
 ````rst
 .. mermaid::
