@@ -1,5 +1,7 @@
 # sphinx-oceanid
 
+[![PyPI](https://img.shields.io/pypi/v/sphinx-oceanid)](https://pypi.org/project/sphinx-oceanid/)
+[![Python](https://img.shields.io/pypi/pyversions/sphinx-oceanid)](https://pypi.org/project/sphinx-oceanid/)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://drillan.github.io/sphinx-oceanid/)
 [![English](https://img.shields.io/badge/lang-English-blue)](README.md)
 
@@ -33,7 +35,11 @@
 
 sphinx-oceanid は Python 3.13 以上が必要です。
 
-GitHub から直接インストール：
+```bash
+pip install sphinx-oceanid
+```
+
+ソースから直接インストール：
 
 ```bash
 pip install git+https://github.com/drillan/sphinx-oceanid.git

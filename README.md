@@ -1,5 +1,7 @@
 # sphinx-oceanid
 
+[![PyPI](https://img.shields.io/pypi/v/sphinx-oceanid)](https://pypi.org/project/sphinx-oceanid/)
+[![Python](https://img.shields.io/pypi/pyversions/sphinx-oceanid)](https://pypi.org/project/sphinx-oceanid/)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://drillan.github.io/sphinx-oceanid/)
 [![日本語](https://img.shields.io/badge/lang-日本語-red)](README.ja.md)
 
@@ -33,7 +35,11 @@ Unsupported diagram types produce explicit warnings (or errors), never silent de
 
 sphinx-oceanid requires Python 3.13+.
 
-From GitHub:
+```bash
+pip install sphinx-oceanid
+```
+
+From source:
 
 ```bash
 pip install git+https://github.com/drillan/sphinx-oceanid.git

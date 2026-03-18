@@ -22,6 +22,13 @@ dependencies = [
     "sphinx>=7.4",
 ]
 
+[project.urls]
+Homepage = "https://github.com/drillan/sphinx-oceanid"
+Documentation = "https://drillan.github.io/sphinx-oceanid/"
+Repository = "https://github.com/drillan/sphinx-oceanid"
+"Bug Tracker" = "https://github.com/drillan/sphinx-oceanid/issues"
+Changelog = "https://github.com/drillan/sphinx-oceanid/blob/main/CHANGELOG.md"
+
 [build-system]
 requires = ["uv_build>=0.10.0,<0.11.0"]
 build-backend = "uv_build"
