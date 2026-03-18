@@ -617,6 +617,7 @@ docs = [
     { name = "sphinx" },
     { name = "sphinx-autobuild" },
     { name = "sphinx-design" },
+    { name = "sphinx-revealjs" },
 ]
 test = [
     { name = "myst-parser" },
@@ -646,6 +647,7 @@ docs = [
     { name = "sphinx", specifier = ">=9.1.0" },
     { name = "sphinx-autobuild", specifier = ">=2024.0" },
     { name = "sphinx-design", specifier = ">=0.6" },
+    { name = "sphinx-revealjs", specifier = ">=3.0" },
 ]
 test = [
     { name = "myst-parser" },
