@@ -101,3 +101,28 @@ Diagrams render when a slide becomes visible, not during the transition animatio
 ### Theme compatibility
 
 sphinx-oceanid's automatic dark/light theme detection works with revealjs themes. The diagram theme follows the presentation theme. See {doc}`configuration` for theme options.
+
+### Constraining diagram height
+
+Diagrams with `height: auto` (the default) may overflow the slide viewport when they are tall — for example, a `flowchart TD` with many nodes. Add a `max-height` constraint via a CSS file loaded through `revealjs_css_files`:
+
+:::{tip}
+Create a CSS file (e.g., `_static/oceanid-revealjs.css`):
+
+```css
+.reveal .slides .oceanid-diagram .oceanid-svg-container svg {
+  max-height: 500px;
+}
+```
+
+Then load it in `conf.py`:
+
+```python
+revealjs_css_files = [
+    "revealjs/plugin/highlight/monokai.css",
+    "oceanid-revealjs.css",
+]
+```
+
+Adjust the `max-height` value to fit your slide dimensions (`revealjs_script_conf["height"]`).
+:::
