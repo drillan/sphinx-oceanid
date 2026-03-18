@@ -5,7 +5,13 @@
 - **Python**: 3.13 or later
 - **Sphinx**: 7.4 or later
 
-## Install from GitHub
+## Install from PyPI
+
+```bash
+pip install sphinx-oceanid
+```
+
+## Install from source
 
 ```bash
 pip install git+https://github.com/drillan/sphinx-oceanid.git
