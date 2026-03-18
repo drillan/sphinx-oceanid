@@ -40,7 +40,10 @@ When Sphinx builds with the `revealjs` builder, sphinx-oceanid sets `"revealjs":
 
 A minimal presentation with diagrams on two slides:
 
-```rst
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
 Slide 1: Architecture
 =====================
 
@@ -59,7 +62,30 @@ Slide 2: Sequence
      API->>Database: INSERT
      Database-->>API: OK
      API-->>Client: 201 Created
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+# Slide 1: Architecture
+
+```{mermaid}
+flowchart LR
+  Client --> API --> Database
 ```
+
+# Slide 2: Sequence
+
+```{mermaid}
+sequenceDiagram
+  Client->>API: POST /data
+  API->>Database: INSERT
+  Database-->>API: OK
+  API-->>Client: 201 Created
+```
+````
+:::
+::::
 
 Build with the revealjs builder:
 
@@ -73,7 +99,10 @@ The diagram on Slide 1 renders immediately. The diagram on Slide 2 renders when 
 
 All standard `mermaid` directive options work in revealjs slides:
 
-```rst
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
 Slide with zoom
 ================
 
@@ -84,7 +113,24 @@ Slide with zoom
    classDiagram
      Animal <|-- Duck
      Animal <|-- Fish
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+# Slide with zoom
+
+```{mermaid}
+:caption: Class hierarchy
+:zoom:
+
+classDiagram
+  Animal <|-- Duck
+  Animal <|-- Fish
 ```
+````
+:::
+::::
 
 See {doc}`the main documentation <index>` for the full list of directive options.
 
