@@ -228,3 +228,8 @@ CLAUDE.md
 
 # issue-workflow
 /.issue-workflow/
+
+# Node.js (for rendering tests)
+node_modules/
+package.json
+package-lock.json
