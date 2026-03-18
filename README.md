@@ -121,6 +121,21 @@ Generate class hierarchy diagrams from Python code:
    :caption: Class hierarchy
 ```
 
+## Local Preview
+
+Mermaid diagrams require HTTP serving — opening built HTML via `file://` will not render diagrams due to browser CORS restrictions.
+
+```bash
+# Quick static server (no extra dependencies)
+make -C docs serve
+
+# Live reload (requires sphinx-autobuild)
+pip install sphinx-oceanid[preview]
+make -C docs livehtml
+```
+
+See [docs/install.md](docs/install.md) for Makefile setup instructions.
+
 ## Documentation
 
 Full documentation is available in the [docs/](docs/) directory.
