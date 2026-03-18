@@ -40,7 +40,7 @@ def _node_rendering_available() -> bool:
             timeout=10,
         )
         return result.returncode == 0
-    except (FileNotFoundError, subprocess.TimeoutExpired):
+    except (OSError, subprocess.SubprocessError):
         return False
 
 
@@ -155,9 +155,15 @@ class TestTestRootRendering:
         codes = _extract_oceanid_codes(index)
         _assert_all_render_successfully(codes)
 
+
+sphinx_revealjs = pytest.importorskip("sphinx_revealjs")
+
+
+class TestRevealjsRendering:
+    """Verify that diagrams in revealjs output render to valid SVG."""
+
     @pytest.mark.sphinx("revealjs", testroot="revealjs")
     def test_revealjs_diagrams_render(self, app: Sphinx, index: str) -> None:
         """Diagrams in revealjs output render to SVG."""
-        pytest.importorskip("sphinx_revealjs")
         codes = _extract_oceanid_codes(index)
         _assert_all_render_successfully(codes)
