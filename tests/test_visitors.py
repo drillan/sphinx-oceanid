@@ -64,9 +64,8 @@ class TestDirectiveOptionHtml:
     @pytest.mark.sphinx("html", testroot="basic")
     def test_config_data_attribute(self, app: Sphinx, index: str) -> None:
         """config option produces data-oceanid-config attribute in HTML."""
-        assert "data-oceanid-config=" in index
-        assert "theme" in index
-        assert "forest" in index
+        expected = 'data-oceanid-config="{&quot;theme&quot;: &quot;forest&quot;}"'
+        assert expected in index
 
     @pytest.mark.sphinx("html", testroot="basic")
     def test_title_data_attribute(self, app: Sphinx, index: str) -> None:
