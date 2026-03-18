@@ -108,7 +108,8 @@ class TestSyntaxTabs:
     def test_index_tabs_use_sync(self, docs_build: Path) -> None:
         """Index page tabs use sync keys so selection persists across tab-sets."""
         content = self._read("index.html", docs_build)
-        assert "sd-tab-label" in content
+        assert 'data-sync-id="rst"' in content
+        assert 'data-sync-id="myst"' in content
 
     def test_supported_diagrams_has_tab_set(self, docs_build: Path) -> None:
         """Supported diagrams page contains sphinx-design tab-set containers."""
