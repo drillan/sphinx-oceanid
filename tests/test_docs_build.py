@@ -80,3 +80,56 @@ class TestDocsBuild:
         assert "configuration" in content
         assert "supported-diagram" in content
         assert "revealjs" in content
+
+
+class TestSyntaxTabs:
+    """Verify RST/MyST syntax tabs render correctly."""
+
+    def _read(self, page: str, docs_build: Path) -> str:
+        return (docs_build / page).read_text()
+
+    def test_index_has_tab_set(self, docs_build: Path) -> None:
+        """Index page contains sphinx-design tab-set containers."""
+        content = self._read("index.html", docs_build)
+        assert "sd-tab-set" in content
+
+    def test_index_has_rst_and_myst_tabs(self, docs_build: Path) -> None:
+        """Index page tab-sets have both RST and MyST tab labels."""
+        content = self._read("index.html", docs_build)
+        assert "RST" in content
+        assert "MyST" in content
+
+    def test_index_tabs_contain_syntax_examples(self, docs_build: Path) -> None:
+        """Index page tabs contain RST and MyST highlighted code blocks."""
+        content = self._read("index.html", docs_build)
+        assert "highlight-rst" in content
+        assert "highlight-markdown" in content
+
+    def test_index_tabs_use_sync(self, docs_build: Path) -> None:
+        """Index page tabs use sync keys so selection persists across tab-sets."""
+        content = self._read("index.html", docs_build)
+        assert "sd-tab-label" in content
+
+    def test_supported_diagrams_has_tab_set(self, docs_build: Path) -> None:
+        """Supported diagrams page contains sphinx-design tab-set containers."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "sd-tab-set" in content
+
+    def test_supported_diagrams_has_rst_and_myst_tabs(self, docs_build: Path) -> None:
+        """Supported diagrams page tab-sets have both RST and MyST tab labels."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "RST" in content
+        assert "MyST" in content
+
+    def test_supported_diagrams_tabs_contain_syntax_examples(self, docs_build: Path) -> None:
+        """Supported diagrams tabs contain RST and MyST highlighted code blocks."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "highlight-rst" in content
+        assert "highlight-markdown" in content
+
+    def test_supported_diagrams_all_types_have_tabs(self, docs_build: Path) -> None:
+        """Each diagram type example in supported-diagrams uses tab-sets."""
+        content = self._read("supported-diagrams.html", docs_build)
+        # Each of the 6 diagram types + graph alias = 7 examples, each with a tab-set
+        tab_set_count = content.count("sd-tab-set")
+        assert tab_set_count >= 7, f"Expected at least 7 tab-sets, found {tab_set_count}"

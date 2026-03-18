@@ -18,6 +18,9 @@ sphinx-oceanid uses [beautiful-mermaid](https://github.com/niccolozy/beautiful-m
 
 ### flowchart / graph
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
@@ -26,6 +29,19 @@ sphinx-oceanid uses [beautiful-mermaid](https://github.com/niccolozy/beautiful-m
      B -->|Yes| C[OK]
      B -->|No| D[Cancel]
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+flowchart LR
+  A[Start] --> B{Decision}
+  B -->|Yes| C[OK]
+  B -->|No| D[Cancel]
+```
+````
+:::
+::::
 
 ```{mermaid}
 flowchart LR
@@ -36,6 +52,9 @@ flowchart LR
 
 The `graph` keyword is an alias for `flowchart`:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
@@ -43,6 +62,18 @@ The `graph` keyword is an alias for `flowchart`:
      A --> B
      B --> C
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+graph TD
+  A --> B
+  B --> C
+```
+````
+:::
+::::
 
 ```{mermaid}
 graph TD
@@ -52,6 +83,9 @@ graph TD
 
 ### sequenceDiagram
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
@@ -63,6 +97,22 @@ graph TD
      Alice->>Bob: How are you?
      Bob-->>Alice: Fine, thanks!
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>Bob: Hello Bob
+  Bob-->>Alice: Hi Alice
+  Alice->>Bob: How are you?
+  Bob-->>Alice: Fine, thanks!
+```
+````
+:::
+::::
 
 ```{mermaid}
 sequenceDiagram
@@ -76,6 +126,9 @@ sequenceDiagram
 
 ### classDiagram
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
@@ -87,6 +140,22 @@ sequenceDiagram
      Duck : +swim()
      Fish : +swim()
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+classDiagram
+  Animal <|-- Duck
+  Animal <|-- Fish
+  Animal : +String name
+  Animal : +move()
+  Duck : +swim()
+  Fish : +swim()
+```
+````
+:::
+::::
 
 ```{mermaid}
 classDiagram
@@ -102,6 +171,9 @@ You can also auto-generate class diagrams from Python code using the `autoclasst
 
 ### stateDiagram / stateDiagram-v2
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
@@ -111,6 +183,20 @@ You can also auto-generate class diagrams from Python code using the `autoclasst
      Inactive --> Active : input
      Active --> [*] : quit
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+stateDiagram-v2
+  [*] --> Active
+  Active --> Inactive : timeout
+  Inactive --> Active : input
+  Active --> [*] : quit
+```
+````
+:::
+::::
 
 ```{mermaid}
 stateDiagram-v2
@@ -124,6 +210,9 @@ Both `stateDiagram` and `stateDiagram-v2` keywords are supported.
 
 ### erDiagram
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
@@ -132,6 +221,19 @@ Both `stateDiagram` and `stateDiagram-v2` keywords are supported.
      ORDER ||--|{ LINE-ITEM : contains
      PRODUCT ||--o{ LINE-ITEM : "is in"
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ LINE-ITEM : contains
+  PRODUCT ||--o{ LINE-ITEM : "is in"
+```
+````
+:::
+::::
 
 ```{mermaid}
 erDiagram
@@ -142,6 +244,9 @@ erDiagram
 
 ### xychart-beta
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
@@ -152,6 +257,21 @@ erDiagram
      bar [1200, 2400, 1800, 3600, 4200]
      line [1200, 2400, 1800, 3600, 4200]
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+xychart-beta
+  title "Monthly Sales"
+  x-axis [Jan, Feb, Mar, Apr, May]
+  y-axis "Revenue (USD)" 0 --> 5000
+  bar [1200, 2400, 1800, 3600, 4200]
+  line [1200, 2400, 1800, 3600, 4200]
+```
+````
+:::
+::::
 
 ```{mermaid}
 xychart-beta

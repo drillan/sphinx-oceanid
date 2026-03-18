@@ -13,7 +13,9 @@ author = "driller"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["myst_parser", "sphinx_oceanid"]
+extensions = ["myst_parser", "sphinx_design", "sphinx_oceanid"]
+
+myst_enable_extensions = ["colon_fence"]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

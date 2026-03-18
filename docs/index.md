@@ -6,12 +6,26 @@
 
 Write Mermaid code directly in the directive body:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
 
    flowchart LR
      A --> B --> C
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+flowchart LR
+  A --> B --> C
+```
+````
+:::
+::::
 
 ```{mermaid}
 flowchart LR
@@ -22,17 +36,43 @@ flowchart LR
 
 Reference an external `.mmd` file instead of inline code. The path is relative to the Sphinx source directory.
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid:: diagrams/flow.mmd
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid} diagrams/flow.mmd
+```
+````
+:::
+::::
 
 All directive options work with external files:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid:: diagrams/flow.mmd
    :caption: System architecture
    :zoom:
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid} diagrams/flow.mmd
+:caption: System architecture
+:zoom:
+```
+````
+:::
+::::
 
 If the file is not found, the build produces an error with the file path and source location.
 
@@ -44,6 +84,9 @@ The `mermaid` directive supports the following options:
 
 Provides accessibility text for the diagram. Rendered as an `aria-label` attribute on the diagram container.
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
    :alt: Sequence diagram showing Alice greeting Bob
@@ -51,6 +94,19 @@ Provides accessibility text for the diagram. Rendered as an `aria-label` attribu
    sequenceDiagram
      Alice->>Bob: Hello
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+:alt: Sequence diagram showing Alice greeting Bob
+
+sequenceDiagram
+  Alice->>Bob: Hello
+```
+````
+:::
+::::
 
 ```{mermaid}
 :alt: Sequence diagram showing Alice greeting Bob
@@ -63,6 +119,9 @@ sequenceDiagram
 
 Wraps the diagram in an HTML `<figure>` element with a `<figcaption>`. Supports inline markup and cross-references via `:name:`.
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
    :caption: System architecture overview
@@ -71,6 +130,20 @@ Wraps the diagram in an HTML `<figure>` element with a `<figcaption>`. Supports 
    flowchart LR
      A --> B --> C
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+:caption: System architecture overview
+:name: fig-architecture-demo
+
+flowchart LR
+  A --> B --> C
+```
+````
+:::
+::::
 
 ```{mermaid}
 :caption: System architecture overview
@@ -84,6 +157,9 @@ flowchart LR
 
 Enables pan-and-zoom interaction on a specific diagram. Uses native Pointer Events + SVG transform (no d3.js).
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
    :zoom:
@@ -91,6 +167,19 @@ Enables pan-and-zoom interaction on a specific diagram. Uses native Pointer Even
    classDiagram
      Animal <|-- Duck
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+:zoom:
+
+classDiagram
+  Animal <|-- Duck
+```
+````
+:::
+::::
 
 ```{mermaid}
 :zoom:
@@ -103,6 +192,9 @@ classDiagram
 
 Passes a JSON configuration object as per-diagram Mermaid settings. Stored as a `data-oceanid-config` attribute on the diagram container.
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
    :config: {"theme": "forest"}
@@ -110,6 +202,19 @@ Passes a JSON configuration object as per-diagram Mermaid settings. Stored as a 
    flowchart LR
      A --> B
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+:config: {"theme": "forest"}
+
+flowchart LR
+  A --> B
+```
+````
+:::
+::::
 
 ```{mermaid}
 :config: {"theme": "forest"}
@@ -122,6 +227,9 @@ flowchart LR
 
 Sets a native Mermaid title for the diagram. Stored as a `data-oceanid-title` attribute on the diagram container. Unlike `:caption:` (which renders outside the diagram as `<figcaption>`), `:title:` is metadata intended for diagram-internal rendering.
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
    :title: Processing Flow
@@ -129,6 +237,19 @@ Sets a native Mermaid title for the diagram. Stored as a `data-oceanid-title` at
    flowchart LR
      A --> B --> C
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+:title: Processing Flow
+
+flowchart LR
+  A --> B --> C
+```
+````
+:::
+::::
 
 ```{mermaid}
 :title: Processing Flow
@@ -141,6 +262,9 @@ flowchart LR
 
 All options can be used together:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. mermaid::
    :name: my-diagram
@@ -154,6 +278,25 @@ All options can be used together:
    flowchart LR
      Input --> Process --> Output
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+:name: my-diagram-demo
+:alt: Flow showing data processing pipeline
+:align: center
+:caption: Data Processing Pipeline
+:zoom:
+:config: {"theme": "forest"}
+:title: Pipeline Overview
+
+flowchart LR
+  Input --> Process --> Output
+```
+````
+:::
+::::
 
 ```{mermaid}
 :name: my-diagram-demo
@@ -176,9 +319,21 @@ The `autoclasstree` directive generates Mermaid class diagrams from Python class
 
 Specify one or more fully qualified class or module names as arguments:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. autoclasstree:: mypackage.MyClass
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{autoclasstree} mypackage.MyClass
+```
+````
+:::
+::::
 
 This generates a `classDiagram` showing the direct inheritance relationships of `MyClass`.
 
@@ -188,32 +343,75 @@ This generates a `classDiagram` showing the direct inheritance relationships of 
 
 Traverse the full inheritance tree up to (but excluding) `object`:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. autoclasstree:: mypackage.MyClass
    :full:
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{autoclasstree} mypackage.MyClass
+:full:
+```
+````
+:::
+::::
 
 #### `:strict:` — Strict module filtering
 
 Only include classes defined in the specified module (exclude re-exported classes):
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. autoclasstree:: mypackage.models
    :strict:
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{autoclasstree} mypackage.models
+:strict:
+```
+````
+:::
+::::
 
 #### `:namespace:` — Namespace filtering
 
 Only include base classes whose module starts with the given namespace:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. autoclasstree:: mypackage.MyClass
    :full:
    :namespace: mypackage
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{autoclasstree} mypackage.MyClass
+:full:
+:namespace: mypackage
+```
+````
+:::
+::::
 
 All standard `mermaid` directive options (`:name:`, `:align:`, `:caption:`, `:zoom:`, `:alt:`, `:config:`, `:title:`) are also available:
 
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
 ````rst
 .. autoclasstree:: mypackage.MyClass
    :full:
@@ -221,6 +419,19 @@ All standard `mermaid` directive options (`:name:`, `:align:`, `:caption:`, `:zo
    :align: center
    :zoom:
 ````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{autoclasstree} mypackage.MyClass
+:full:
+:caption: Class hierarchy of MyClass
+:align: center
+:zoom:
+```
+````
+:::
+::::
 
 ```{toctree}
 :maxdepth: 2
