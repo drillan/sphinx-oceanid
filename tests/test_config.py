@@ -110,3 +110,7 @@ class TestConstants:
         url = BEAUTIFUL_MERMAID_CDN_TEMPLATE.format(version="1.0.0")
         assert url.startswith("https://")
         assert "1.0.0" in url
+
+    def test_cdn_template_uses_esm_sh(self) -> None:
+        """CDN template uses esm.sh for browser-compatible ES module resolution."""
+        assert "esm.sh" in BEAUTIFUL_MERMAID_CDN_TEMPLATE

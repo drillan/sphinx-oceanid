@@ -10,7 +10,7 @@
 
 **Diagnosis**:
 1. Open the browser developer console (F12)
-2. Check for network errors related to `cdn.jsdelivr.net` or `beautiful-mermaid`
+2. Check for network errors related to `esm.sh` or `beautiful-mermaid`
 3. Look for `data-oceanid-render-failed` attributes on diagram containers
 
 **Solution**: Use a local JS bundle instead of the CDN:
