@@ -1,5 +1,8 @@
 # sphinx-oceanid
 
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://drillan.github.io/sphinx-oceanid/)
+[![日本語](https://img.shields.io/badge/lang-日本語-red)](README.ja.md)
+
 High-quality Mermaid diagrams in Sphinx, powered by [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid).
 
 ## Features
@@ -7,7 +10,7 @@ High-quality Mermaid diagrams in Sphinx, powered by [beautiful-mermaid](https://
 - **beautiful-mermaid rendering** — Uses ELK.js-based layout engine for high-quality SVG output
 - **CSS variable theming** — Automatic dark/light theme detection with instant switching (no re-render)
 - **Zero-config** — Works out of the box with CDN-hosted beautiful-mermaid
-- **sphinx-revealjs support** — Lazy rendering for hidden slides via IntersectionObserver
+- **sphinx-revealjs support** — Lazy rendering for hidden slides via IntersectionObserver ([example](https://drillan.github.io/sphinx-oceanid/slides/))
 - **Pan & zoom** — Native Pointer Events + SVG transform (no d3.js dependency)
 - **Fullscreen modal** — View diagrams in a viewport-sized overlay
 - **External file support** — Reference `.mmd` files instead of inline code
@@ -138,7 +141,7 @@ See [docs/install.md](docs/install.md) for Makefile setup instructions.
 
 ## Documentation
 
-Full documentation is available in the [docs/](docs/) directory.
+Full documentation is available at **[drillan.github.io/sphinx-oceanid](https://drillan.github.io/sphinx-oceanid/)** or in the [docs/](docs/) directory.
 
 ## License
 
