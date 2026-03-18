@@ -31,7 +31,7 @@ No additional configuration is required. sphinx-oceanid works out of the box usi
 
 ## Local beautiful-mermaid bundle (optional)
 
-By default, sphinx-oceanid loads beautiful-mermaid from the jsDelivr CDN. To use a local copy instead:
+By default, sphinx-oceanid loads beautiful-mermaid from the [esm.sh](https://esm.sh/) CDN. To use a local copy instead:
 
 1. Download the beautiful-mermaid JS bundle.
 

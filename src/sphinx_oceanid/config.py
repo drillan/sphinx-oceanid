@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from sphinx.application import Sphinx
 
 BEAUTIFUL_MERMAID_VERSION = "1.1.3"
-BEAUTIFUL_MERMAID_CDN_TEMPLATE = "https://cdn.jsdelivr.net/npm/beautiful-mermaid@{version}/dist/index.js"
+BEAUTIFUL_MERMAID_CDN_TEMPLATE = "https://esm.sh/beautiful-mermaid@{version}"
 
 SUPPORTED_DIAGRAM_TYPES: frozenset[str] = frozenset(
     {
