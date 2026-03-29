@@ -18,6 +18,13 @@
   display: block;
 }
 
+/* Diagram title (from frontmatter or :title: option) */
+.oceanid-diagram-title {
+  font-weight: bold;
+  text-align: center;
+  margin: 0 0 0.5rem;
+}
+
 /* Alignment */
 .oceanid-diagram.align-center {
   text-align: center;

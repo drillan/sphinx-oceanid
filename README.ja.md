@@ -16,6 +16,7 @@
 - **パン＆ズーム** — ネイティブ Pointer Events + SVG transform を使用（d3.js 不要）
 - **フルスクリーンモーダル** — ビューポートサイズのオーバーレイでダイアグラムを表示
 - **外部ファイル対応** — インラインコードの代わりに `.mmd` ファイルを参照可能
+- **YAML frontmatter** — `.mmd` ファイルや RST 内で Mermaid frontmatter によるタイトル・設定が可能
 - **クラスダイアグラム自動生成** — Python コードからクラス階層図を自動生成
 
 ## 対応ダイアグラムタイプ
@@ -131,6 +132,25 @@ oceanid_unsupported_action = "warning"
    flowchart LR
      A --> B --> C
 ```
+
+## YAML Frontmatter
+
+外部 `.mmd` ファイルに YAML frontmatter を記述して、ダイアグラムのタイトルや per-diagram レンダリングオプションを設定できます：
+
+```yaml
+---
+title: User Authentication Flow
+config:
+  bg: "#1a1b26"
+  fg: "#a9b1d6"
+---
+flowchart TD
+  A[Login Page] --> B{Valid credentials?}
+  B -->|Yes| C[Dashboard]
+  B -->|No| D[Error Message]
+```
+
+RST インラインコンテンツでも frontmatter を使用できます。MyST Markdown では、`config` に JSON 形式を使用してください。詳細は[ドキュメント](https://drillan.github.io/sphinx-oceanid/)を参照してください。
 
 ## クラスダイアグラム自動生成
 

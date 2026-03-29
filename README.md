@@ -16,6 +16,7 @@ Mermaid diagrams in Sphinx, powered by [beautiful-mermaid](https://github.com/ni
 - **Pan & zoom** — Native Pointer Events + SVG transform (no d3.js dependency)
 - **Fullscreen modal** — View diagrams in a viewport-sized overlay
 - **External file support** — Reference `.mmd` files instead of inline code
+- **YAML frontmatter** — Set title and per-diagram config via Mermaid frontmatter in `.mmd` files and RST
 - **Auto class diagrams** — Generate class hierarchy diagrams from Python code
 
 ## Supported Diagram Types
@@ -131,6 +132,25 @@ oceanid_unsupported_action = "warning"
    flowchart LR
      A --> B --> C
 ```
+
+## YAML Frontmatter
+
+External `.mmd` files can include YAML frontmatter to set the diagram title and per-diagram rendering options:
+
+```yaml
+---
+title: User Authentication Flow
+config:
+  bg: "#1a1b26"
+  fg: "#a9b1d6"
+---
+flowchart TD
+  A[Login Page] --> B{Valid credentials?}
+  B -->|Yes| C[Dashboard]
+  B -->|No| D[Error Message]
+```
+
+Frontmatter is also supported in RST inline content. In MyST Markdown, use directive options with JSON format for `config`. See the [documentation](https://drillan.github.io/sphinx-oceanid/) for details.
 
 ## Auto Class Diagrams
 
