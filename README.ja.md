@@ -5,7 +5,7 @@
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://drillan.github.io/sphinx-oceanid/)
 [![English](https://img.shields.io/badge/lang-English-blue)](README.md)
 
-[beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid) を活用した、Sphinx 向け高品質 Mermaid ダイアグラム拡張機能。
+[beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid) を活用した、Sphinx 向け Mermaid ダイアグラム拡張機能。
 
 ## 特徴
 

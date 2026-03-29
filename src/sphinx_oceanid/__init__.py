@@ -1,4 +1,4 @@
-"""sphinx-oceanid: High-quality Mermaid diagrams in Sphinx."""
+"""sphinx-oceanid: Mermaid diagrams in Sphinx."""
 
 from __future__ import annotations
 

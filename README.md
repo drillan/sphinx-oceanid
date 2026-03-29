@@ -5,7 +5,7 @@
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://drillan.github.io/sphinx-oceanid/)
 [![日本語](https://img.shields.io/badge/lang-日本語-red)](README.ja.md)
 
-High-quality Mermaid diagrams in Sphinx, powered by [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid).
+Mermaid diagrams in Sphinx, powered by [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid).
 
 ## Features
 

@@ -35,7 +35,7 @@ class TestProjectMetadata:
         assert project["name"] == "sphinx-oceanid"
 
     def test_version(self, project: dict[str, object]) -> None:
-        assert project["version"] == "0.1.0"
+        assert project["version"] == "0.1.1"
 
     def test_requires_python(self, project: dict[str, object]) -> None:
         assert project["requires-python"] == ">=3.13"
