@@ -35,8 +35,8 @@ class TestConfigSpec:
             assert spec.name.startswith("oceanid_"), f"{spec.name} missing oceanid_ prefix"
 
     def test_config_specs_count(self) -> None:
-        """CONFIG_SPECS should contain exactly 13 settings."""
-        assert len(CONFIG_SPECS) == 13
+        """CONFIG_SPECS should contain exactly 12 settings."""
+        assert len(CONFIG_SPECS) == 12
 
     def test_config_specs_all_rebuild_html(self) -> None:
         """All config specs should trigger HTML rebuild."""
@@ -50,14 +50,14 @@ class TestResolveJsUrl:
     def test_resolve_js_url_default(self) -> None:
         """Default config produces CDN URL with default version."""
         config = SimpleNamespace(oceanid_local_js="", oceanid_version=BEAUTIFUL_MERMAID_VERSION)
-        url = resolve_js_url(config)
+        url = resolve_js_url(config)  # type: ignore[arg-type]
         expected = BEAUTIFUL_MERMAID_CDN_TEMPLATE.format(version=BEAUTIFUL_MERMAID_VERSION)
         assert url == expected
 
     def test_resolve_js_url_custom_version(self) -> None:
         """Custom version produces CDN URL with that version."""
         config = SimpleNamespace(oceanid_local_js="", oceanid_version="2.0.0")
-        url = resolve_js_url(config)
+        url = resolve_js_url(config)  # type: ignore[arg-type]
         expected = BEAUTIFUL_MERMAID_CDN_TEMPLATE.format(version="2.0.0")
         assert url == expected
 
@@ -66,7 +66,7 @@ class TestResolveJsUrl:
         config = SimpleNamespace(
             oceanid_local_js="/static/beautiful-mermaid.js", oceanid_version=BEAUTIFUL_MERMAID_VERSION
         )
-        url = resolve_js_url(config)
+        url = resolve_js_url(config)  # type: ignore[arg-type]
         assert url == "/static/beautiful-mermaid.js"
 
 

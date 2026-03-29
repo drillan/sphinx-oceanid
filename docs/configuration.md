@@ -172,21 +172,6 @@ Opacity of the fullscreen button, from 0 (fully transparent) to 100 (fully opaqu
 oceanid_fullscreen_button_opacity = 80
 ```
 
-## Asset
-
-### `oceanid_js_priority`
-
-| | |
-|---|---|
-| **Type** | `int` |
-| **Default** | `500` |
-
-Priority for JavaScript file loading order in the Sphinx build. Lower values load earlier. Adjust this if you need sphinx-oceanid's scripts to load before or after other extensions' scripts.
-
-```python
-oceanid_js_priority = 200
-```
-
 ## Quick reference
 
 | Setting | Type | Default | Description |
@@ -203,7 +188,6 @@ oceanid_js_priority = 200
 | `oceanid_fullscreen` | `bool` | `False` | Enable fullscreen modal |
 | `oceanid_fullscreen_button` | `str` | `"⛶"` | Fullscreen button character |
 | `oceanid_fullscreen_button_opacity` | `int` | `50` | Button opacity (0–100) |
-| `oceanid_js_priority` | `int` | `500` | JS load priority |
 
 ## Migrating from sphinxcontrib-mermaid
 

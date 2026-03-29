@@ -7,7 +7,7 @@ class mermaid_node(nodes.General, nodes.Element):
     """Docutils node representing a Mermaid diagram.
 
     Attributes:
-        code: Mermaid notation string (without frontmatter).
+        code: Mermaid notation string (may include YAML frontmatter).
         diagram_type: Parsed diagram type (e.g. "flowchart", "sequenceDiagram").
         is_supported: Whether beautiful-mermaid supports this diagram type.
         align: "left" | "center" | "right".

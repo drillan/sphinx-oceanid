@@ -123,7 +123,8 @@ class Mermaid(SphinxDirective):
         """Parse :config: option into a dict.
 
         Returns:
-            Parsed config dict, or empty dict if no config or invalid JSON.
+            Parsed config dict, or empty dict if no config, invalid JSON,
+            or non-object JSON value.
         """
         if "config" not in self.options:
             return {}
@@ -140,6 +141,11 @@ class Mermaid(SphinxDirective):
 
         if isinstance(parsed, dict):
             return parsed
+        logger.warning(
+            ":config: option must be a JSON object, got %s",
+            type(parsed).__name__,
+            location=(self.env.docname, self.lineno),
+        )
         return {}
 
     def _figure_wrapper(self, node: mermaid_node) -> list[nodes.Node]:

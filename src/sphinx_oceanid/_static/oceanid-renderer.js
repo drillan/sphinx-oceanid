@@ -74,31 +74,43 @@ const main = async () => {
     renderVisibleDiagrams(visible, renderFn, themeColors);
     setupLazyRendering(hidden, renderFn, themeColors);
 
+    observeThemeChanges(config, THEMES);
+
     if (config.zoom || config.zoomSelectors.length > 0) {
-      const { setupZoom } = await import("./oceanid-zoom.js");
-      setupZoom(config.zoomSelectors);
+      try {
+        const { setupZoom } = await import("./oceanid-zoom.js");
+        setupZoom(config.zoomSelectors);
+      } catch (err) {
+        console.error("sphinx-oceanid: Failed to initialize zoom:", err);
+      }
     }
 
     if (config.fullscreen) {
-      const { setupFullscreen } = await import("./oceanid-fullscreen.js");
-      setupFullscreen(config);
+      try {
+        const { setupFullscreen } = await import("./oceanid-fullscreen.js");
+        setupFullscreen(config);
+      } catch (err) {
+        console.error("sphinx-oceanid: Failed to initialize fullscreen:", err);
+      }
     }
 
-    if (config.revealjs || typeof Reveal !== "undefined") {
-      Reveal.addEventListener?.("slidechanged", () => {
-        document
-          .querySelectorAll(
-            '.oceanid-diagram:not([data-oceanid-rendered="true"])'
-          )
-          .forEach((el) => {
-            if (el.offsetParent !== null) {
-              renderSingleDiagram(el, renderFn, themeColors);
-            }
-          });
-      });
+    if (typeof Reveal !== "undefined") {
+      try {
+        Reveal.addEventListener("slidechanged", () => {
+          document
+            .querySelectorAll(
+              '.oceanid-diagram:not([data-oceanid-rendered="true"])'
+            )
+            .forEach((el) => {
+              if (el.offsetParent !== null) {
+                renderSingleDiagram(el, renderFn, themeColors);
+              }
+            });
+        });
+      } catch (err) {
+        console.error("sphinx-oceanid: Failed to initialize revealjs integration:", err);
+      }
     }
-
-    observeThemeChanges(config, THEMES, renderFn);
   } catch (err) {
     console.error("sphinx-oceanid: Failed to initialize:", err);
   }
