@@ -306,6 +306,37 @@ oceanid_fullscreen = True
 oceanid_unsupported_action = "warning"
 ```
 
+## Proactive Diagram Suggestions
+
+When editing `docs/*.md` or `docs/*.rst` files, analyze the text content and suggest diagrams where visualization would improve comprehension. **Never insert a diagram without explicit user approval.**
+
+### Detection Patterns
+
+| Text Pattern | Suggested Diagram | Example |
+|---|---|---|
+| Steps, flows, pipelines (A then B then C) | flowchart | "Fetch data, transform, then store" |
+| Messages between components, request/response | sequenceDiagram | "Client sends a request to the API..." |
+| Class inheritance, module dependencies | classDiagram | "Inherits from BaseHandler..." |
+| State transitions, lifecycles | stateDiagram | "Order goes from Pending to Confirmed to Shipped..." |
+| Entity relationships, data models | erDiagram | "A user has many orders" |
+| Numeric data, comparisons, trends | xychart-beta | "Monthly revenue: Jan 100, Feb 150..." |
+
+### How to Suggest
+
+When a diagram opportunity is detected, suggest in this format:
+
+1. **Where**: The location to insert the diagram (after which paragraph/section)
+2. **Why**: One sentence explaining why this diagram type fits
+3. **What**: The elements the diagram should contain
+
+Example suggestion:
+
+> This process description would be clearer as a **flowchart**.
+> Elements: [Fetch] → [Transform] → [Store]
+> Shall I add it after this paragraph?
+
+Only write the Mermaid code after the user approves. If the user declines, continue without adding a diagram.
+
 ## Best Practices
 
 - **Always verify the diagram type is supported** before writing. The 6 supported types cover most visualization needs.
