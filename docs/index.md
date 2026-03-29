@@ -437,6 +437,7 @@ All standard `mermaid` directive options (`:name:`, `:align:`, `:caption:`, `:zo
 :maxdepth: 2
 :caption: Contents:
 
+getting-started
 install
 supported-diagrams
 configuration

@@ -80,6 +80,19 @@ sequenceDiagram
 ```
 ````
 
+ビルドしてプレビュー — Mermaid ダイアグラムの表示には HTTP サーバーが必要です（`file://` では CORS 制限によりレンダリングされません）：
+
+```bash
+# 簡易静的サーバー（追加依存なし）
+make -C docs serve
+
+# ライブリロード（sphinx-autobuild が必要）
+pip install sphinx-oceanid[preview]
+make -C docs livehtml
+```
+
+Makefile の設定方法は [docs/install.md](docs/install.md) を参照してください。
+
 ## 設定
 
 すべての設定オプションは `conf.py` で `oceanid_` プレフィックスを使用します：
@@ -129,21 +142,6 @@ Python コードからクラス階層図を自動生成します：
    :namespace: mypackage
    :caption: クラス階層
 ```
-
-## ローカルプレビュー
-
-Mermaid ダイアグラムの表示には HTTP サーバーが必要です。ビルド済み HTML を `file://` で直接開いてもダイアグラムはレンダリングされません（ブラウザの CORS 制限）。
-
-```bash
-# 簡易静的サーバー（追加依存なし）
-make -C docs serve
-
-# ライブリロード（sphinx-autobuild が必要）
-pip install sphinx-oceanid[preview]
-make -C docs livehtml
-```
-
-Makefile の設定方法は [docs/install.md](docs/install.md) を参照してください。
 
 ## ドキュメント
 
