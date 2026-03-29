@@ -230,9 +230,9 @@ sequenceDiagram
   Bob-->>Alice: Fine, thanks!
 ```
 
-#### Actors, loops, alt blocks, notes, and activation
+#### TCP handshake and connection lifecycle
 
-`actor` declarations, combined control blocks (`loop`, `alt`/`else`), `Note`, activation via `+`/`-` shorthand, and self-messages:
+`participant` aliases, activation via `+`/`-` shorthand, `Note`, `loop`, and `alt`/`else` blocks — modeled on TCP 3-way handshake, data transfer, and connection teardown:
 
 ::::{tab-set}
 :::{tab-item} RST
@@ -241,18 +241,23 @@ sequenceDiagram
 .. mermaid::
 
    sequenceDiagram
-     actor User
+     participant C as Client
      participant S as Server
-     User ->>+ S: Request
-     loop Validate
-       S ->> S: Check input
+     Note over C, S: 3-way handshake
+     C ->>+ S: SYN
+     S -->>- C: SYN-ACK
+     C ->> S: ACK
+     loop Data transfer
+       C ->>+ S: Request
+       alt Success
+         S -->>- C: 200 OK
+       else Error
+         S -->> C: 500
+       end
      end
-     Note right of S: Processing
-     alt Success
-       S ->>- User: 200 OK
-     else Error
-       S -->> User: 500
-     end
+     Note over C, S: Connection teardown
+     C ->> S: FIN
+     S -->> C: FIN-ACK
 ````
 :::
 :::{tab-item} MyST
@@ -260,18 +265,23 @@ sequenceDiagram
 ````markdown
 ```{mermaid}
 sequenceDiagram
-  actor User
+  participant C as Client
   participant S as Server
-  User ->>+ S: Request
-  loop Validate
-    S ->> S: Check input
+  Note over C, S: 3-way handshake
+  C ->>+ S: SYN
+  S -->>- C: SYN-ACK
+  C ->> S: ACK
+  loop Data transfer
+    C ->>+ S: Request
+    alt Success
+      S -->>- C: 200 OK
+    else Error
+      S -->> C: 500
+    end
   end
-  Note right of S: Processing
-  alt Success
-    S ->>- User: 200 OK
-  else Error
-    S -->> User: 500
-  end
+  Note over C, S: Connection teardown
+  C ->> S: FIN
+  S -->> C: FIN-ACK
 ```
 ````
 :::
@@ -279,18 +289,23 @@ sequenceDiagram
 
 ```{mermaid}
 sequenceDiagram
-  actor User
+  participant C as Client
   participant S as Server
-  User ->>+ S: Request
-  loop Validate
-    S ->> S: Check input
+  Note over C, S: 3-way handshake
+  C ->>+ S: SYN
+  S -->>- C: SYN-ACK
+  C ->> S: ACK
+  loop Data transfer
+    C ->>+ S: Request
+    alt Success
+      S -->>- C: 200 OK
+    else Error
+      S -->> C: 500
+    end
   end
-  Note right of S: Processing
-  alt Success
-    S ->>- User: 200 OK
-  else Error
-    S -->> User: 500
-  end
+  Note over C, S: Connection teardown
+  C ->> S: FIN
+  S -->> C: FIN-ACK
 ```
 
 ```{note}
@@ -406,7 +421,39 @@ classDiagram
   Duck ..|> Swimmable
 ```
 
-You can also auto-generate class diagrams from Python code using the `autoclasstree` directive. See {doc}`index` for details.
+#### Auto-generated from Python code
+
+The `autoclasstree` directive generates class diagrams from Python class hierarchies automatically. This example visualizes the Sphinx role class hierarchy:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. autoclasstree:: sphinx.roles
+   :strict:
+   :caption: Sphinx role class hierarchy
+   :zoom:
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{autoclasstree} sphinx.roles
+:strict:
+:caption: Sphinx role class hierarchy
+:zoom:
+```
+````
+:::
+::::
+
+```{autoclasstree} sphinx.roles
+:strict:
+:caption: Sphinx role class hierarchy
+:zoom:
+```
+
+See {doc}`index` for full `autoclasstree` options (`:full:`, `:strict:`, `:namespace:`).
 
 ```{note}
 **Known limitations**
