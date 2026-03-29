@@ -71,6 +71,13 @@ class TestParseFrontmatter:
         assert result.title == "Hello"
         assert result.config == {}
 
+    def test_title_containing_dashes(self) -> None:
+        """Title value containing '---' does not break frontmatter parsing."""
+        code = "---\ntitle: A---B\n---\nflowchart TD\n  A --> B"
+        result = parse_frontmatter(code)
+        assert result.title == "A---B"
+        assert result.code == "flowchart TD\n  A --> B"
+
     def test_non_dict_config_raises(self) -> None:
         """Non-dict config value raises ValueError."""
         code = "---\nconfig: not-a-dict\n---\nflowchart TD\n  A --> B"
@@ -153,17 +160,23 @@ class TestExternalFileFrontmatter:
 class TestDirectiveOptionOverridesFrontmatter:
     """Directive options take precedence over frontmatter values."""
 
-    @pytest.mark.sphinx("html", testroot="basic")
-    def test_option_title_not_overridden_by_frontmatter(self, app: Sphinx) -> None:
-        """When :title: option is set, frontmatter title does not override it.
-
-        test-basic has :title: My Diagram Title on a diagram without frontmatter.
-        """
+    @pytest.mark.sphinx("html", testroot="frontmatter-override")
+    def test_option_title_overrides_frontmatter_title(self, app: Sphinx) -> None:
+        """Directive :title: option takes precedence over frontmatter title."""
         app.build()
         doctree = app.env.get_doctree("index")
         nodes = list(doctree.findall(mermaid_node))
-        title_nodes = [n for n in nodes if n.get("mermaid_title")]
-        assert title_nodes[0]["mermaid_title"] == "My Diagram Title"
+        assert len(nodes) >= 1
+        assert nodes[0]["mermaid_title"] == "Option Title"
+
+    @pytest.mark.sphinx("html", testroot="frontmatter-override")
+    def test_option_config_overrides_frontmatter_config(self, app: Sphinx) -> None:
+        """Directive :config: option takes precedence over frontmatter config."""
+        app.build()
+        doctree = app.env.get_doctree("index")
+        nodes = list(doctree.findall(mermaid_node))
+        assert len(nodes) >= 1
+        assert nodes[0]["mermaid_config"] == {"bg": "#ffffff"}
 
 
 # ---------------------------------------------------------------------------

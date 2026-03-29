@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 
 import yaml
 
-_FRONTMATTER_RE = re.compile(r"^---\n(.*?)---\n?", re.DOTALL)
+_FRONTMATTER_RE = re.compile(r"\A---\n(.*?)^---[ \t]*$\n?", re.DOTALL | re.MULTILINE)
 
 
 @dataclass(frozen=True)
