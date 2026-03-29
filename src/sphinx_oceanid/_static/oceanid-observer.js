@@ -2,6 +2,7 @@
  * sphinx-oceanid: Diagram rendering and lazy loading via IntersectionObserver.
  *
  * Exports:
+ *   renderSingleDiagram(el, renderFn, themeColors)
  *   renderVisibleDiagrams(elements, renderFn, themeColors)
  *   setupLazyRendering(elements, renderFn, themeColors)
  */

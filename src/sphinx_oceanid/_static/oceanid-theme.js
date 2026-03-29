@@ -2,9 +2,8 @@
  * sphinx-oceanid: Theme management — dark/light detection and CSS variable theming.
  *
  * Exports:
- *   detectColorScheme() → "dark" | "light"
  *   resolveThemeColors(config, THEMES) → DiagramColors
- *   observeThemeChanges(config, THEMES, renderFn) → void
+ *   observeThemeChanges(config, THEMES) → void
  */
 
 /** CSS variable keys used by beautiful-mermaid SVGs. */
@@ -21,7 +20,7 @@ const CSS_VAR_KEYS = ["bg", "fg", "line", "accent", "muted", "surface", "border"
  *
  * @returns {"dark" | "light"}
  */
-export const detectColorScheme = () => {
+const detectColorScheme = () => {
   // 1. data-theme attribute
   const dataTheme =
     document.documentElement.getAttribute("data-theme") ||
@@ -127,9 +126,8 @@ const applyCssVariables = (colors) => {
  *
  * @param {object} config - Oceanid config object
  * @param {Record<string, object>} THEMES - beautiful-mermaid THEMES map
- * @param {Function} renderFn - Unused (reserved for future extension)
  */
-export const observeThemeChanges = (config, THEMES, renderFn) => {
+export const observeThemeChanges = (config, THEMES) => {
   if (config.theme !== "auto") return;
 
   const updateTheme = () => {

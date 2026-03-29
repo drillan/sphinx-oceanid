@@ -9,6 +9,7 @@ _ConfigRebuild = Literal["", "env", "epub", "gettext", "html", "applehelp", "dev
 
 if TYPE_CHECKING:
     from sphinx.application import Sphinx
+    from sphinx.config import Config
 
 BEAUTIFUL_MERMAID_VERSION = "1.1.3"
 BEAUTIFUL_MERMAID_CDN_TEMPLATE = "https://esm.sh/beautiful-mermaid@{version}"
@@ -61,7 +62,6 @@ CONFIG_SPECS: tuple[ConfigSpec, ...] = (
     ConfigSpec("oceanid_fullscreen", False, "html", bool, "Enable fullscreen modal"),
     ConfigSpec("oceanid_fullscreen_button", "\u26f6", "html", str, "Fullscreen button character"),
     ConfigSpec("oceanid_fullscreen_button_opacity", 50, "html", int, "Fullscreen button opacity (0-100)"),
-    ConfigSpec("oceanid_js_priority", 500, "html", int, "JS load priority"),
 )
 
 
@@ -80,7 +80,7 @@ def register_config_values(app: Sphinx) -> None:
 VALID_UNSUPPORTED_ACTIONS: frozenset[str] = frozenset({"warning", "error"})
 
 
-def validate_config(app: Sphinx, config: object) -> None:
+def validate_config(app: Sphinx, config: Config) -> None:
     """Validate config values at config-inited event.
 
     Raises:
@@ -88,13 +88,13 @@ def validate_config(app: Sphinx, config: object) -> None:
     """
     from sphinx.errors import ExtensionError
 
-    action: str = config.oceanid_unsupported_action  # type: ignore[attr-defined]
+    action: str = config.oceanid_unsupported_action
     if action not in VALID_UNSUPPORTED_ACTIONS:
         valid_list = ", ".join(sorted(VALID_UNSUPPORTED_ACTIONS))
         raise ExtensionError(f'Invalid oceanid_unsupported_action: "{action}". Valid values: {valid_list}.')
 
 
-def resolve_js_url(config: object) -> str:
+def resolve_js_url(config: Config) -> str:
     """Resolve beautiful-mermaid JS URL from Sphinx config.
 
     Args:
@@ -103,8 +103,8 @@ def resolve_js_url(config: object) -> str:
     Returns:
         URL string for the beautiful-mermaid JS bundle.
     """
-    local_path: str = config.oceanid_local_js  # type: ignore[attr-defined]
+    local_path: str = config.oceanid_local_js
     if local_path:
         return local_path
-    version: str = config.oceanid_version  # type: ignore[attr-defined]
+    version: str = config.oceanid_version
     return BEAUTIFUL_MERMAID_CDN_TEMPLATE.format(version=version)

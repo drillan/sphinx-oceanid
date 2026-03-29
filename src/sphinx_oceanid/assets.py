@@ -35,7 +35,7 @@ def install_assets(
         return
 
     page_config = _build_page_config(app, mermaid_nodes)
-    config_json = json.dumps(page_config, ensure_ascii=False)
+    config_json = json.dumps(page_config, ensure_ascii=False).replace("</", r"<\/")
     beautiful_mermaid_url = cast("str", page_config["beautifulMermaidUrl"])
 
     pathto = cast("Callable[[str, bool], str]", context["pathto"])

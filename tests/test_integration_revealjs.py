@@ -63,13 +63,13 @@ class TestRevealjsSlidechangedListener:
         content = renderer_js.read_text(encoding="utf-8")
         assert "slidechanged" in content
 
-    def test_renderer_js_checks_revealjs_config(self) -> None:
-        """oceanid-renderer.js checks config.revealjs before attaching listener."""
+    def test_renderer_js_checks_reveal_global(self) -> None:
+        """oceanid-renderer.js uses typeof Reveal guard before attaching listener."""
         from importlib.resources import files
 
         renderer_js = files("sphinx_oceanid") / "_static" / "oceanid-renderer.js"
         content = renderer_js.read_text(encoding="utf-8")
-        assert "config.revealjs" in content
+        assert 'typeof Reveal !== "undefined"' in content
 
     @pytest.mark.sphinx("revealjs", testroot="revealjs")
     def test_revealjs_config_json_is_valid(self, app: Sphinx, index: str) -> None:
