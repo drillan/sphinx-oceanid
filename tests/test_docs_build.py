@@ -134,3 +134,52 @@ class TestSyntaxTabs:
         # Each of the 6 diagram types + graph alias = 7 examples, each with a tab-set
         tab_set_count = content.count("sd-tab-set")
         assert tab_set_count >= 7, f"Expected at least 7 tab-sets, found {tab_set_count}"
+
+
+class TestPerTypeLimitations:
+    """Verify per-type known limitations are documented on supported-diagrams page."""
+
+    def _read(self, page: str, docs_build: Path) -> str:
+        return (docs_build / page).read_text()
+
+    def test_flowchart_limitations(self, docs_build: Path) -> None:
+        """flowchart section documents click and bidirectional arrow limitations."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "click" in content
+        assert "&lt;--&gt;" in content or "<code" in content
+
+    def test_sequence_diagram_limitations(self, docs_build: Path) -> None:
+        """sequenceDiagram section documents autonumber, box, create/destroy limitations."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "autonumber" in content
+        assert "box" in content
+        assert "create" in content
+        assert "activate" in content
+
+    def test_class_diagram_limitations(self, docs_build: Path) -> None:
+        """classDiagram section documents click/note/link and classDef limitations."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "classDef" in content
+
+    def test_state_diagram_limitations(self, docs_build: Path) -> None:
+        """stateDiagram section documents fork/join/choice and concurrent limitations."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "fork" in content
+        assert "choice" in content
+
+    def test_er_diagram_limitations(self, docs_build: Path) -> None:
+        """erDiagram section documents entity alias limitation."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "alias" in content
+
+    def test_xychart_limitations(self, docs_build: Path) -> None:
+        """xychart-beta section documents named series label limitation."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "series" in content
+
+    def test_upstream_issue_references(self, docs_build: Path) -> None:
+        """Limitations reference upstream beautiful-mermaid issues where applicable."""
+        content = self._read("supported-diagrams.html", docs_build)
+        assert "beautiful-mermaid" in content
+        # At least one upstream issue number should be referenced
+        assert "#53" in content or "#58" in content or "#80" in content
