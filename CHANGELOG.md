@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-03-29
+
+### Added
+
+- YAML frontmatter support for `title` and `config` in `.mmd` files, RST inline content, and MyST directive options (#58, #57)
+- Per-diagram rendering overrides via `data-oceanid-config` (beautiful-mermaid `RenderOptions` compatible keys)
+- Diagram title display via `data-oceanid-title` rendered as heading above SVG
+- Sample `.mmd` file with frontmatter in documentation
+- YAML Frontmatter section in docs with examples for all three input patterns
+
+### Changed
+
+- `_parse_mermaid_config()` now accepts both JSON strings and pre-parsed dicts
+- Added `pyyaml` to dependencies for YAML frontmatter parsing
+
 ## [0.1.1] - 2026-03-29
 
 ### Changed
@@ -35,5 +50,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - External `.mmd` file support
 - `autoclasstree` directive for Python class hierarchy diagrams
 
+[0.1.2]: https://github.com/drillan/sphinx-oceanid/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/drillan/sphinx-oceanid/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/drillan/sphinx-oceanid/releases/tag/v0.1.0
