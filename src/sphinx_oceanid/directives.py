@@ -123,7 +123,8 @@ class Mermaid(SphinxDirective):
         """Parse :config: option into a dict.
 
         Returns:
-            Parsed config dict, or empty dict if no config or invalid JSON.
+            Parsed config dict, or empty dict if no config, invalid JSON,
+            or non-object JSON value.
         """
         if "config" not in self.options:
             return {}

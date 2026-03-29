@@ -31,9 +31,9 @@ class TestRevealjsIntegration:
         assert "oceanid-diagram" in index
 
     @pytest.mark.sphinx("revealjs", testroot="revealjs")
-    def test_revealjs_config_json_has_revealjs_flag(self, app: Sphinx, index: str) -> None:
-        """Config JSON contains revealjs: true flag."""
-        assert '"revealjs": true' in index
+    def test_revealjs_config_json_has_no_revealjs_key(self, app: Sphinx, index: str) -> None:
+        """Config JSON does not contain revealjs key (detection is via typeof Reveal)."""
+        assert '"revealjs"' not in index
 
     @pytest.mark.sphinx("revealjs", testroot="revealjs")
     def test_revealjs_contains_multiple_diagrams(self, app: Sphinx, index: str) -> None:
@@ -79,5 +79,5 @@ class TestRevealjsSlidechangedListener:
         json_start = index.find(">", start) + 1
         json_end = index.find("</script>", json_start)
         config = json.loads(index[json_start:json_end])
-        assert config["revealjs"] is True
+        assert "revealjs" not in config
         assert "beautifulMermaidUrl" in config

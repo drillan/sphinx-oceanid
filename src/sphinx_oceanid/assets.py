@@ -80,7 +80,6 @@ def _build_page_config(
         "fullscreen": config.oceanid_fullscreen,
         "fullscreenButton": config.oceanid_fullscreen_button,
         "fullscreenButtonOpacity": config.oceanid_fullscreen_button_opacity,
-        "revealjs": app.builder.name == "revealjs",
     }
 
 
