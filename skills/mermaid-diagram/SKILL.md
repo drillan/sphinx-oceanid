@@ -93,6 +93,55 @@ flowchart TD
 
 The path is relative to the Sphinx source directory (`docs/`). The `.mmd` file contains only the Mermaid code (no directive syntax).
 
+## Syntax (reStructuredText)
+
+For `.rst` files, use the standard RST directive syntax:
+
+```rst
+.. mermaid::
+
+   flowchart LR
+     A[Input] --> B[Process] --> C[Output]
+```
+
+### With Options
+
+```rst
+.. mermaid::
+   :caption: System Architecture
+   :alt: Architecture diagram showing data flow
+   :align: center
+   :zoom:
+
+   flowchart TD
+     API[API Server] --> DB[(Database)]
+     API --> Cache[Redis Cache]
+```
+
+### External .mmd File
+
+```rst
+.. mermaid:: diagrams/architecture.mmd
+   :caption: Full Architecture
+   :zoom:
+```
+
+### Auto Class Diagram (RST)
+
+```rst
+.. autoclasstree:: mypackage.MyClass
+   :full:
+   :namespace: mypackage
+   :caption: MyClass class hierarchy
+   :zoom:
+```
+
+### Syntax Selection Rule
+
+- `.md` files → MyST syntax (` ```{mermaid} `)
+- `.rst` files → RST syntax (`.. mermaid::`)
+- Directive options are identical for both formats
+
 ## Directive Options
 
 | Option | Type | Description |
