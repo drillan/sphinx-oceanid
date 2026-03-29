@@ -138,7 +138,7 @@ For `.rst` files, use the standard RST directive syntax:
 
 ### Syntax Selection Rule
 
-- `.md` files → MyST syntax (` ```{mermaid} `)
+- `.md` files → MyST syntax (`` ```{mermaid} ``)
 - `.rst` files → RST syntax (`.. mermaid::`)
 - Directive options are identical for both formats
 
