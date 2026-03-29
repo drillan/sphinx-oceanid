@@ -594,6 +594,7 @@ name = "sphinx-oceanid"
 version = "0.1.1"
 source = { editable = "." }
 dependencies = [
+    { name = "pyyaml" },
     { name = "sphinx" },
 ]
 
@@ -610,6 +611,7 @@ dev = [
     { name = "ruff" },
     { name = "sphinx-revealjs" },
     { name = "types-docutils" },
+    { name = "types-pyyaml" },
 ]
 docs = [
     { name = "myst-parser" },
@@ -627,6 +629,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "pyyaml" },
     { name = "sphinx", specifier = ">=7.4" },
     { name = "sphinx-autobuild", marker = "extra == 'preview'", specifier = ">=2024.0" },
 ]
@@ -640,6 +643,7 @@ dev = [
     { name = "ruff" },
     { name = "sphinx-revealjs" },
     { name = "types-docutils" },
+    { name = "types-pyyaml" },
 ]
 docs = [
     { name = "myst-parser", specifier = ">=5.0.0" },
@@ -742,6 +746,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/9f/27/a7f16b3a2fad0a4ddd85a668319f9a1d0311c4bd9578894f6471c7e6c788/types_docutils-0.22.3.20260316.tar.gz", hash = "sha256:8ef27d565b9831ff094fe2eac75337a74151013e2d21ecabd445c2955f891564", size = 57263, upload-time = "2026-03-16T04:29:12.211Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/70/60/c1f22b7cfc4837d5419e5a2d8702c7d65f03343f866364b71cccd8a73b79/types_docutils-0.22.3.20260316-py3-none-any.whl", hash = "sha256:083c7091b8072c242998ec51da1bf1492f0332387da81c3b085efbf5ca754c7d", size = 91968, upload-time = "2026-03-16T04:29:11.114Z" },
+]
+
+[[package]]
+name = "types-pyyaml"
+version = "6.0.12.20250915"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7e/69/3c51b36d04da19b92f9e815be12753125bd8bc247ba0470a982e6979e71c/types_pyyaml-6.0.12.20250915.tar.gz", hash = "sha256:0f8b54a528c303f0e6f7165687dd33fafa81c807fcac23f632b63aa624ced1d3", size = 17522, upload-time = "2025-09-15T03:01:00.728Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/e0/1eed384f02555dde685fff1a1ac805c1c7dcb6dd019c916fe659b1c1f9ec/types_pyyaml-6.0.12.20250915-py3-none-any.whl", hash = "sha256:e7d4d9e064e89a3b3cae120b4990cd370874d2bf12fa5f46c97018dd5d3c9ab6", size = 20338, upload-time = "2025-09-15T03:00:59.218Z" },
 ]
 
 [[package]]

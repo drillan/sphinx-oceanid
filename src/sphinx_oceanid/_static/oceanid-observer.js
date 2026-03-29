@@ -7,6 +7,57 @@
  *   setupLazyRendering(elements, renderFn, themeColors)
  */
 
+/** Keys from data-oceanid-config that map to beautiful-mermaid RenderOptions. */
+const RENDER_OPTION_KEYS = [
+  "bg", "fg", "line", "accent", "muted", "surface", "border",
+  "font", "padding", "nodeSpacing", "layerSpacing", "componentSpacing",
+  "transparent", "interactive",
+];
+
+/**
+ * Build per-diagram render options by merging page-level theme colors
+ * with diagram-level config (data-oceanid-config).
+ *
+ * Only keys that match beautiful-mermaid RenderOptions are applied;
+ * unknown keys (e.g. Mermaid.js "theme", "look") are silently ignored.
+ *
+ * @param {Element} el - .oceanid-diagram element
+ * @param {object} themeColors - Page-level DiagramColors object
+ * @returns {object} Merged render options
+ */
+const buildDiagramOptions = (el, themeColors) => {
+  const configAttr = el.getAttribute("data-oceanid-config");
+  if (!configAttr) {
+    return { ...themeColors };
+  }
+  try {
+    const config = JSON.parse(configAttr);
+    const overrides = {};
+    for (const key of RENDER_OPTION_KEYS) {
+      if (key in config) {
+        overrides[key] = config[key];
+      }
+    }
+    return { ...themeColors, ...overrides };
+  } catch {
+    return { ...themeColors };
+  }
+};
+
+/**
+ * Insert a title element before the SVG container if data-oceanid-title is set.
+ *
+ * @param {Element} el - .oceanid-diagram element
+ */
+const insertTitle = (el) => {
+  const title = el.getAttribute("data-oceanid-title");
+  if (!title) return;
+  const titleEl = document.createElement("p");
+  titleEl.className = "oceanid-diagram-title";
+  titleEl.textContent = title;
+  el.prepend(titleEl);
+};
+
 /**
  * Render a single diagram element.
  *
@@ -24,7 +75,10 @@ export const renderSingleDiagram = (el, renderFn, themeColors) => {
       throw new Error("data-oceanid-code attribute is missing");
     }
 
-    const svg = renderFn(code, { ...themeColors });
+    const options = buildDiagramOptions(el, themeColors);
+    const svg = renderFn(code, options);
+
+    insertTitle(el);
 
     const container = document.createElement("div");
     container.className = "oceanid-svg-container";

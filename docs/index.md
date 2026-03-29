@@ -76,6 +76,113 @@ All directive options work with external files:
 
 If the file is not found, the build produces an error with the file path and source location.
 
+#### Sample `.mmd` file
+
+External `.mmd` files can include [YAML frontmatter](#yaml-frontmatter) to set the title and per-diagram configuration:
+
+```yaml
+---
+title: User Authentication Flow
+config:
+  bg: "#1a1b26"
+  fg: "#a9b1d6"
+---
+flowchart TD
+  A[Login Page] --> B{Valid credentials?}
+  B -->|Yes| C[Generate Token]
+  C --> D[Dashboard]
+  B -->|No| E[Show Error]
+  E --> A
+```
+
+Reference the file as usual:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid:: diagrams/auth-flow.mmd
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid} diagrams/auth-flow.mmd
+```
+````
+:::
+::::
+
+```{mermaid} diagrams/auth-flow.mmd
+```
+
+(yaml-frontmatter)=
+## YAML Frontmatter
+
+sphinx-oceanid supports [Mermaid YAML frontmatter](https://mermaid.js.org/config/frontmatter.html) for setting `title` and `config` within diagram code. The frontmatter block is delimited by `---` markers at the start of the code.
+
+### In external `.mmd` files
+
+This is the recommended way to use frontmatter. Place the YAML block at the top of the file:
+
+```yaml
+---
+title: My Diagram
+config:
+  bg: "#1a1b26"
+  fg: "#a9b1d6"
+---
+flowchart TD
+  A --> B
+```
+
+### In RST inline content
+
+Frontmatter can also be written directly in the directive body:
+
+````rst
+.. mermaid::
+
+   ---
+   title: My Diagram
+   config:
+     bg: "#1a1b26"
+   ---
+   flowchart TD
+     A --> B
+````
+
+### In MyST Markdown
+
+In MyST, the `---` block inside `` ```{mermaid} `` is interpreted as [directive options](https://myst-parser.readthedocs.io/en/latest/syntax/directives.html), not as Mermaid frontmatter. Use `title` and `config` as directive options:
+
+````markdown
+```{mermaid}
+---
+title: My Diagram
+config: {"bg": "#1a1b26", "fg": "#a9b1d6"}
+---
+flowchart TD
+  A --> B
+```
+````
+
+```{note}
+In MyST, the `config` value must be a JSON string on a single line because MyST's option parser does not preserve nested YAML structure. This is the same limitation as [sphinxcontrib-mermaid](https://github.com/mgaitan/sphinxcontrib-mermaid).
+```
+
+### Precedence
+
+Directive options (`:title:`, `:config:`) take precedence over frontmatter values. This allows overriding frontmatter in external files without editing the file itself.
+
+```{note}
+sphinx-oceanid uses [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid) as its rendering engine, which has its own color system based on `RenderOptions`. The following `config` keys are applied as per-diagram rendering overrides:
+
+`bg`, `fg`, `line`, `accent`, `muted`, `surface`, `border`, `font`, `padding`, `nodeSpacing`, `layerSpacing`, `componentSpacing`, `transparent`, `interactive`
+
+Standard Mermaid.js configuration keys such as `theme`, `look`, and `themeVariables` are not supported by beautiful-mermaid and will be silently ignored.
+```
+
 ## Directive Options
 
 The `mermaid` directive supports the following options:
@@ -223,9 +330,9 @@ flowchart LR
   A --> B
 ```
 
-### `:title:` — Mermaid native title
+### `:title:` — Diagram title
 
-Sets a native Mermaid title for the diagram. Stored as a `data-oceanid-title` attribute on the diagram container. Unlike `:caption:` (which renders outside the diagram as `<figcaption>`), `:title:` is metadata intended for diagram-internal rendering.
+Sets a title displayed above the rendered diagram. Stored as a `data-oceanid-title` attribute on the diagram container. Unlike `:caption:` (which wraps the diagram in a `<figure>` with `<figcaption>`), `:title:` renders as a heading directly above the SVG.
 
 ::::{tab-set}
 :::{tab-item} RST

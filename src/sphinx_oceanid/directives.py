@@ -14,6 +14,7 @@ from sphinx.util.docutils import SphinxDirective
 
 from .autoclassdiag import class_diagram
 from .diagram_types import extract_diagram_type, is_supported_diagram, unsupported_diagram_message
+from .frontmatter import parse_frontmatter
 from .nodes import mermaid_node
 
 if TYPE_CHECKING:
@@ -48,8 +49,16 @@ class Mermaid(SphinxDirective):
             )
             return []
 
+        code, frontmatter_title, frontmatter_config = self._extract_frontmatter(code)
+
         mermaid_config = self._parse_mermaid_config()
         mermaid_title = self.options.get("title", "")
+
+        # Frontmatter values are used as defaults; directive options take precedence
+        if not mermaid_title and frontmatter_title:
+            mermaid_title = frontmatter_title
+        if not mermaid_config and frontmatter_config:
+            mermaid_config = frontmatter_config
 
         diagram_type = extract_diagram_type(code)
         is_supported = is_supported_diagram(diagram_type)
@@ -116,6 +125,8 @@ class Mermaid(SphinxDirective):
     def _parse_mermaid_config(self) -> dict[str, object]:
         """Parse :config: option into a dict.
 
+        Accepts either a JSON string or a dict (when pre-parsed by MyST).
+
         Returns:
             Parsed config dict, or empty dict if no config, invalid JSON,
             or non-object JSON value.
@@ -123,8 +134,14 @@ class Mermaid(SphinxDirective):
         if "config" not in self.options:
             return {}
 
+        raw = self.options["config"]
+
+        # MyST parser may pass a pre-parsed dict from YAML options block
+        if isinstance(raw, dict):
+            return raw
+
         try:
-            parsed = json.loads(self.options["config"])
+            parsed = json.loads(raw)
         except json.JSONDecodeError as exc:
             logger.warning(
                 "Invalid JSON in :config: option: %s",
@@ -141,6 +158,24 @@ class Mermaid(SphinxDirective):
             location=(self.env.docname, self.lineno),
         )
         return {}
+
+    def _extract_frontmatter(self, code: str) -> tuple[str, str, dict[str, object]]:
+        """Extract YAML frontmatter from Mermaid code.
+
+        Returns:
+            Tuple of (stripped_code, title, config). On parse errors,
+            logs a warning and returns the original code with empty values.
+        """
+        try:
+            result = parse_frontmatter(code)
+        except ValueError as exc:
+            logger.warning(
+                "Invalid Mermaid frontmatter: %s",
+                exc,
+                location=(self.env.docname, self.lineno),
+            )
+            return code, "", {}
+        return result.code, result.title, result.config
 
     def _figure_wrapper(self, node: mermaid_node) -> list[nodes.Node]:
         """Wrap mermaid_node in a figure with figcaption."""

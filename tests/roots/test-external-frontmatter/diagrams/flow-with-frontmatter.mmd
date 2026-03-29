@@ -1,0 +1,10 @@
+---
+title: User Authentication Flow
+config:
+  theme: dark
+  look: handDrawn
+---
+flowchart TD
+  A[Login Page] --> B{Valid credentials?}
+  B -->|Yes| C[Dashboard]
+  B -->|No| D[Error Message]

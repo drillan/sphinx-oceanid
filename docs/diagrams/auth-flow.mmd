@@ -1,0 +1,12 @@
+---
+title: User Authentication Flow
+config:
+  bg: "#1a1b26"
+  fg: "#a9b1d6"
+---
+flowchart TD
+  A[Login Page] --> B{Valid credentials?}
+  B -->|Yes| C[Generate Token]
+  C --> D[Dashboard]
+  B -->|No| E[Show Error]
+  E --> A
