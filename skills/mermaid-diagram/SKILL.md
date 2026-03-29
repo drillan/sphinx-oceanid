@@ -32,6 +32,15 @@ description: >
 
 This project uses [sphinx-oceanid](https://github.com/drillan/sphinx-oceanid/) to render Mermaid diagrams in Sphinx documentation. sphinx-oceanid uses the beautiful-mermaid rendering engine (ELK.js layout), which produces high-quality SVG output but only supports a specific set of diagram types.
 
+## Activation Check
+
+Before applying this skill, verify the project uses sphinx-oceanid:
+
+1. Check if `docs/conf.py` (or `conf.py` at project root) exists
+2. Verify it contains `sphinx_oceanid` in the `extensions` list
+
+If these conditions are not met, this skill does not apply — do not suggest mermaid directives or proactive diagrams.
+
 ## Supported Diagram Types
 
 Only these 6 types are supported. Using any other type causes a build warning or error:
