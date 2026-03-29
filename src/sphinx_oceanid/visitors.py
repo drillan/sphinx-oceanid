@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 from docutils.nodes import SkipNode
 from sphinx.util import logging
 
-from .config import SUPPORTED_DIAGRAM_TYPES
+from .diagram_types import unsupported_diagram_message
 
 if TYPE_CHECKING:
     from sphinx.writers.html5 import HTML5Translator
@@ -26,24 +26,13 @@ def _render_unsupported(self: HTML5Translator, node: mermaid_node) -> None:
     supported types and the original Mermaid source code.
     """
     code: str = node["code"]
-    diagram_type: str = node.get("diagram_type") or "unknown"
-    supported_list = ", ".join(sorted(SUPPORTED_DIAGRAM_TYPES))
+    diagram_type: str | None = node.get("diagram_type")
+    message = unsupported_diagram_message(diagram_type)
 
-    logger.warning(
-        'Diagram type "%s" is not supported by sphinx-oceanid. Supported types: %s',
-        diagram_type,
-        supported_list,
-        location=node,
-    )
+    logger.warning("%s", message, location=node)
 
     self.body.append('<div class="oceanid-unsupported">\n')
-    self.body.append(
-        f'<p class="oceanid-unsupported-message">'
-        f"Diagram type &quot;{html.escape(diagram_type)}&quot; "
-        f"is not supported by sphinx-oceanid. "
-        f"Supported types: {html.escape(supported_list)}."
-        f"</p>\n"
-    )
+    self.body.append(f'<p class="oceanid-unsupported-message">{html.escape(message)}</p>\n')
     self.body.append(f'<pre class="oceanid-unsupported-code">{html.escape(code)}</pre>\n')
     self.body.append("</div>\n")
 
@@ -104,6 +93,17 @@ def html_visit_mermaid(self: HTML5Translator, node: mermaid_node) -> None:
     zoom_id: str = node.get("zoom_id", "")
     if zoom_id and not ids:
         attrs.insert(1, f'id="{html.escape(zoom_id, quote=True)}"')
+
+    # Apply width/height as CSS custom properties when non-default
+    style_parts: list[str] = []
+    width: str = self.config.oceanid_width
+    height: str = self.config.oceanid_height
+    if width != "100%":
+        style_parts.append(f"--oceanid-width: {html.escape(width, quote=True)}")
+    if height != "auto":
+        style_parts.append(f"--oceanid-height: {html.escape(height, quote=True)}")
+    if style_parts:
+        attrs.append(f'style="{"; ".join(style_parts)}"')
 
     self.body.append(f"<div {' '.join(attrs)}>\n")
 

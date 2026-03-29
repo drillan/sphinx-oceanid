@@ -13,8 +13,7 @@ from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective
 
 from .autoclassdiag import class_diagram
-from .config import SUPPORTED_DIAGRAM_TYPES
-from .diagram_types import extract_diagram_type, is_supported_diagram
+from .diagram_types import extract_diagram_type, is_supported_diagram, unsupported_diagram_message
 from .nodes import mermaid_node
 
 if TYPE_CHECKING:
@@ -56,12 +55,7 @@ class Mermaid(SphinxDirective):
         is_supported = is_supported_diagram(diagram_type)
 
         if not is_supported and self.config.oceanid_unsupported_action == "error":
-            supported_list = ", ".join(sorted(SUPPORTED_DIAGRAM_TYPES))
-            raise ExtensionError(
-                f'Diagram type "{diagram_type or "unknown"}" '
-                f"is not supported by sphinx-oceanid. "
-                f"Supported types: {supported_list}."
-            )
+            raise ExtensionError(unsupported_diagram_message(diagram_type))
 
         zoom_enabled = "zoom" in self.options
         zoom_id = ""

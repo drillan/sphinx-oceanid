@@ -14,19 +14,6 @@ if TYPE_CHECKING:
 BEAUTIFUL_MERMAID_VERSION = "1.1.3"
 BEAUTIFUL_MERMAID_CDN_TEMPLATE = "https://esm.sh/beautiful-mermaid@{version}"
 
-SUPPORTED_DIAGRAM_TYPES: frozenset[str] = frozenset(
-    {
-        "flowchart",
-        "graph",  # flowchart alias
-        "stateDiagram",
-        "stateDiagram-v2",
-        "sequenceDiagram",
-        "classDiagram",
-        "erDiagram",
-        "xychart-beta",
-    }
-)
-
 
 @dataclass(frozen=True)
 class ConfigSpec:

@@ -92,19 +92,14 @@ const enableSvgZoom = (svg) => {
     applyViewBox();
   });
 
-  svg.addEventListener("pointerup", (e) => {
+  const endPan = (e) => {
     if (isPanning) {
       isPanning = false;
       svg.releasePointerCapture(e.pointerId);
     }
-  });
-
-  svg.addEventListener("pointercancel", (e) => {
-    if (isPanning) {
-      isPanning = false;
-      svg.releasePointerCapture(e.pointerId);
-    }
-  });
+  };
+  svg.addEventListener("pointerup", endPan);
+  svg.addEventListener("pointercancel", endPan);
 
   // Double-click reset
   svg.addEventListener("dblclick", (e) => {

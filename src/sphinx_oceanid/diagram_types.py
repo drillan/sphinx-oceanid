@@ -4,7 +4,18 @@ from __future__ import annotations
 
 import re
 
-from .config import SUPPORTED_DIAGRAM_TYPES
+SUPPORTED_DIAGRAM_TYPES: frozenset[str] = frozenset(
+    {
+        "flowchart",
+        "graph",  # flowchart alias
+        "stateDiagram",
+        "stateDiagram-v2",
+        "sequenceDiagram",
+        "classDiagram",
+        "erDiagram",
+        "xychart-beta",
+    }
+)
 
 _FRONTMATTER_RE = re.compile(r"^---.*?---\s*", re.DOTALL)
 
@@ -53,3 +64,17 @@ def is_supported_diagram(diagram_type: str | None) -> bool:
     if diagram_type is None:
         return False
     return diagram_type in SUPPORTED_DIAGRAM_TYPES
+
+
+def unsupported_diagram_message(diagram_type: str | None) -> str:
+    """Build a human-readable message for an unsupported diagram type.
+
+    Args:
+        diagram_type: Diagram type string, or None if unrecognized.
+
+    Returns:
+        Formatted error message with the list of supported types.
+    """
+    label = diagram_type or "unknown"
+    supported_list = ", ".join(sorted(SUPPORTED_DIAGRAM_TYPES))
+    return f'Diagram type "{label}" is not supported by sphinx-oceanid. Supported types: {supported_list}.'

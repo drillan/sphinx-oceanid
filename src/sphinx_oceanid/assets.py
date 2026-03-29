@@ -73,8 +73,6 @@ def _build_page_config(
         "theme": config.oceanid_theme,
         "themeDark": config.oceanid_theme_dark,
         "themeLight": config.oceanid_theme_light,
-        "width": config.oceanid_width,
-        "height": config.oceanid_height,
         "zoom": config.oceanid_zoom,
         "zoomSelectors": zoom_selectors,
         "fullscreen": config.oceanid_fullscreen,
