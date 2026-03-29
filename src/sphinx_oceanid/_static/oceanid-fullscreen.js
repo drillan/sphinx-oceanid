@@ -81,9 +81,10 @@ const addFullscreenButton = (el, config, modalCtx) => {
     }
     modalCtx.container.innerHTML = "";
     const clone = svg.cloneNode(true);
+    clone.removeAttribute("width");
+    clone.removeAttribute("height");
     clone.style.width = "100%";
-    clone.style.height = "auto";
-    clone.style.maxHeight = "90vh";
+    clone.style.height = "100%";
     modalCtx.container.appendChild(clone);
     modalCtx.modal.classList.add("active");
   });

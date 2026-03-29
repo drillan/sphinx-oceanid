@@ -27,3 +27,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 html_theme = "shibuya"
 language = "en"
 html_static_path = ["_static"]
+
+# -- Options for sphinx-oceanid ------------------------------------------------
+
+oceanid_fullscreen = True
