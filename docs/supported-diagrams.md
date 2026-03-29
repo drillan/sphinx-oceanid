@@ -50,6 +50,13 @@ flowchart LR
   B -->|No| D[Cancel]
 ```
 
+```{note}
+**Known limitations**
+
+- `click` events are not supported
+- Bidirectional arrow (`<-->`) has an SVG rendering bug ([beautiful-mermaid#58](https://github.com/niccolozy/beautiful-mermaid/issues/58))
+```
+
 The `graph` keyword is an alias for `flowchart`:
 
 ::::{tab-set}
@@ -124,6 +131,16 @@ sequenceDiagram
   Bob-->>Alice: Fine, thanks!
 ```
 
+```{note}
+**Known limitations**
+
+- `autonumber` is not supported
+- `box` groups are not supported
+- `create` / `destroy` (dynamic actor lifecycle) are not supported
+- Explicit `activate` / `deactivate` commands are not supported (`+`/`-` shorthand only)
+- A note placed before the first message is silently dropped ([beautiful-mermaid#53](https://github.com/niccolozy/beautiful-mermaid/issues/53))
+```
+
 ### classDiagram
 
 ::::{tab-set}
@@ -169,6 +186,13 @@ classDiagram
 
 You can also auto-generate class diagrams from Python code using the `autoclasstree` directive. See {doc}`index` for details.
 
+```{note}
+**Known limitations**
+
+- `click` / `note` / `link` are not supported
+- `classDef` assignments are not reflected in SVG output ([beautiful-mermaid#80](https://github.com/niccolozy/beautiful-mermaid/issues/80))
+```
+
 ### stateDiagram / stateDiagram-v2
 
 ::::{tab-set}
@@ -208,6 +232,14 @@ stateDiagram-v2
 
 Both `stateDiagram` and `stateDiagram-v2` keywords are supported.
 
+```{note}
+**Known limitations**
+
+- `<<fork>>` / `<<join>>` / `<<choice>>` pseudo-states are not supported
+- Concurrent states (`--` separator) are not supported
+- `note` is not supported
+```
+
 ### erDiagram
 
 ::::{tab-set}
@@ -240,6 +272,12 @@ erDiagram
   CUSTOMER ||--o{ ORDER : places
   ORDER ||--|{ LINE-ITEM : contains
   PRODUCT ||--o{ LINE-ITEM : "is in"
+```
+
+```{note}
+**Known limitations**
+
+- Entity aliases (`CUSTOMER["Customer"]`) are not supported
 ```
 
 ### xychart-beta
@@ -280,6 +318,12 @@ xychart-beta
   y-axis "Revenue (USD)" 0 --> 5000
   bar [1200, 2400, 1800, 3600, 4200]
   line [1200, 2400, 1800, 3600, 4200]
+```
+
+```{note}
+**Known limitations**
+
+- Named series labels are not supported (minor)
 ```
 
 ## Unsupported diagram types
