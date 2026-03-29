@@ -88,6 +88,105 @@ graph TD
   B --> C
 ```
 
+#### Subgraphs
+
+Nested subgraphs with `direction` override:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid::
+
+   flowchart TB
+     subgraph Frontend
+       direction LR
+       A[Browser] --> B[React App]
+     end
+     subgraph Backend
+       direction LR
+       C[API Server] --> D[(Database)]
+     end
+     Frontend --> Backend
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+flowchart TB
+  subgraph Frontend
+    direction LR
+    A[Browser] --> B[React App]
+  end
+  subgraph Backend
+    direction LR
+    C[API Server] --> D[(Database)]
+  end
+  Frontend --> Backend
+```
+````
+:::
+::::
+
+```{mermaid}
+flowchart TB
+  subgraph Frontend
+    direction LR
+    A[Browser] --> B[React App]
+  end
+  subgraph Backend
+    direction LR
+    C[API Server] --> D[(Database)]
+  end
+  Frontend --> Backend
+```
+
+#### Node shapes, edge styles, and classDef
+
+Various node shapes, edge styles (dotted `-.->`, thick `==>`), and `classDef` styling:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid::
+
+   flowchart LR
+     classDef accent fill:#f9f,stroke:#333
+     A([Terminal]) ==> B{Diamond}
+     B -.->|Option 1| C[(Cylinder)]
+     B -->|Option 2| D{{Hexagon}}
+     A & B --> E((Circle))
+     class A accent
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+flowchart LR
+  classDef accent fill:#f9f,stroke:#333
+  A([Terminal]) ==> B{Diamond}
+  B -.->|Option 1| C[(Cylinder)]
+  B -->|Option 2| D{{Hexagon}}
+  A & B --> E((Circle))
+  class A accent
+```
+````
+:::
+::::
+
+```{mermaid}
+flowchart LR
+  classDef accent fill:#f9f,stroke:#333
+  A([Terminal]) ==> B{Diamond}
+  B -.->|Option 1| C[(Cylinder)]
+  B -->|Option 2| D{{Hexagon}}
+  A & B --> E((Circle))
+  class A accent
+```
+
 ### sequenceDiagram
 
 ::::{tab-set}
@@ -129,6 +228,69 @@ sequenceDiagram
   Bob-->>Alice: Hi Alice
   Alice->>Bob: How are you?
   Bob-->>Alice: Fine, thanks!
+```
+
+#### Actors, loops, alt blocks, notes, and activation
+
+`actor` declarations, combined control blocks (`loop`, `alt`/`else`), `Note`, activation via `+`/`-` shorthand, and self-messages:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid::
+
+   sequenceDiagram
+     actor User
+     participant S as Server
+     User ->>+ S: Request
+     loop Validate
+       S ->> S: Check input
+     end
+     Note right of S: Processing
+     alt Success
+       S ->>- User: 200 OK
+     else Error
+       S -->> User: 500
+     end
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+sequenceDiagram
+  actor User
+  participant S as Server
+  User ->>+ S: Request
+  loop Validate
+    S ->> S: Check input
+  end
+  Note right of S: Processing
+  alt Success
+    S ->>- User: 200 OK
+  else Error
+    S -->> User: 500
+  end
+```
+````
+:::
+::::
+
+```{mermaid}
+sequenceDiagram
+  actor User
+  participant S as Server
+  User ->>+ S: Request
+  loop Validate
+    S ->> S: Check input
+  end
+  Note right of S: Processing
+  alt Success
+    S ->>- User: 200 OK
+  else Error
+    S -->> User: 500
+  end
 ```
 
 ```{note}
@@ -184,6 +346,66 @@ classDiagram
   Fish : +swim()
 ```
 
+#### Class blocks, annotations, relationships, and generics
+
+Class blocks with visibility markers, `<<abstract>>` annotation, generics (`~T~`), and multiple relationship types with cardinality:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid::
+
+   classDiagram
+     class Animal {
+       <<abstract>>
+       +String name
+       +move()* void
+     }
+     class List~T~ {
+       +get(index int) T
+     }
+     Animal <|-- Duck
+     Animal *-- "1" Heart
+     Duck ..|> Swimmable
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+classDiagram
+  class Animal {
+    <<abstract>>
+    +String name
+    +move()* void
+  }
+  class List~T~ {
+    +get(index int) T
+  }
+  Animal <|-- Duck
+  Animal *-- "1" Heart
+  Duck ..|> Swimmable
+```
+````
+:::
+::::
+
+```{mermaid}
+classDiagram
+  class Animal {
+    <<abstract>>
+    +String name
+    +move()* void
+  }
+  class List~T~ {
+    +get(index int) T
+  }
+  Animal <|-- Duck
+  Animal *-- "1" Heart
+  Duck ..|> Swimmable
+```
+
 You can also auto-generate class diagrams from Python code using the `autoclasstree` directive. See {doc}`index` for details.
 
 ```{note}
@@ -230,6 +452,63 @@ stateDiagram-v2
   Active --> [*] : quit
 ```
 
+#### Composite states and aliases
+
+Composite (nested) states with `direction` override, and state aliases using `state "Description" as id`:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid::
+
+   stateDiagram-v2
+     state "Waiting for input" as waiting
+     state Active {
+       direction LR
+       [*] --> Running
+       Running --> Paused : pause
+       Paused --> Running : resume
+     }
+     [*] --> waiting
+     waiting --> Active : start
+     Active --> [*] : stop
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+stateDiagram-v2
+  state "Waiting for input" as waiting
+  state Active {
+    direction LR
+    [*] --> Running
+    Running --> Paused : pause
+    Paused --> Running : resume
+  }
+  [*] --> waiting
+  waiting --> Active : start
+  Active --> [*] : stop
+```
+````
+:::
+::::
+
+```{mermaid}
+stateDiagram-v2
+  state "Waiting for input" as waiting
+  state Active {
+    direction LR
+    [*] --> Running
+    Running --> Paused : pause
+    Paused --> Running : resume
+  }
+  [*] --> waiting
+  waiting --> Active : start
+  Active --> [*] : stop
+```
+
 Both `stateDiagram` and `stateDiagram-v2` keywords are supported.
 
 ```{note}
@@ -272,6 +551,66 @@ erDiagram
   CUSTOMER ||--o{ ORDER : places
   ORDER ||--|{ LINE-ITEM : contains
   PRODUCT ||--o{ LINE-ITEM : "is in"
+```
+
+#### Entity attributes and relationship styles
+
+Entity blocks with typed attributes (`PK`, `FK`, `UK` markers), all four cardinality types, and identifying (`--`) vs non-identifying (`..`) relationships:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid::
+
+   erDiagram
+     CUSTOMER {
+       int id PK
+       string name
+       string email UK
+     }
+     ORDER {
+       int id PK
+       int customer_id FK
+     }
+     CUSTOMER ||--o{ ORDER : places
+     CUSTOMER |o..o| ADDRESS : "lives at"
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+erDiagram
+  CUSTOMER {
+    int id PK
+    string name
+    string email UK
+  }
+  ORDER {
+    int id PK
+    int customer_id FK
+  }
+  CUSTOMER ||--o{ ORDER : places
+  CUSTOMER |o..o| ADDRESS : "lives at"
+```
+````
+:::
+::::
+
+```{mermaid}
+erDiagram
+  CUSTOMER {
+    int id PK
+    string name
+    string email UK
+  }
+  ORDER {
+    int id PK
+    int customer_id FK
+  }
+  CUSTOMER ||--o{ ORDER : places
+  CUSTOMER |o..o| ADDRESS : "lives at"
 ```
 
 ```{note}
@@ -318,6 +657,48 @@ xychart-beta
   y-axis "Revenue (USD)" 0 --> 5000
   bar [1200, 2400, 1800, 3600, 4200]
   line [1200, 2400, 1800, 3600, 4200]
+```
+
+#### Numeric x-axis and horizontal orientation
+
+Numeric x-axis range, axis titles, and `horizontal` orientation with multiple series:
+
+::::{tab-set}
+:::{tab-item} RST
+:sync: rst
+````rst
+.. mermaid::
+
+   xychart-beta horizontal
+     title "Score by Iteration"
+     x-axis "Iteration" 1 --> 5
+     y-axis "Score" 0 --> 100
+     bar [45, 62, 78, 85, 92]
+     line [40, 58, 73, 82, 90]
+````
+:::
+:::{tab-item} MyST
+:sync: myst
+````markdown
+```{mermaid}
+xychart-beta horizontal
+  title "Score by Iteration"
+  x-axis "Iteration" 1 --> 5
+  y-axis "Score" 0 --> 100
+  bar [45, 62, 78, 85, 92]
+  line [40, 58, 73, 82, 90]
+```
+````
+:::
+::::
+
+```{mermaid}
+xychart-beta horizontal
+  title "Score by Iteration"
+  x-axis "Iteration" 1 --> 5
+  y-axis "Score" 0 --> 100
+  bar [45, 62, 78, 85, 92]
+  line [40, 58, 73, 82, 90]
 ```
 
 ```{note}
