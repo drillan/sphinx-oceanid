@@ -1,7 +1,7 @@
 (supported-diagram-types)=
 # Supported Diagram Types
 
-sphinx-oceanid uses [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid) (an ELK.js-based rendering engine) instead of standard Mermaid.js. beautiful-mermaid supports 6 diagram types with high-quality layout. Standard Mermaid.js supports 20+ types, so diagrams outside these 6 types are not rendered.
+sphinx-oceanid uses [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) (an ELK.js-based rendering engine) instead of standard Mermaid.js. beautiful-mermaid supports 6 diagram types with high-quality layout. Standard Mermaid.js supports 20+ types, so diagrams outside these 6 types are not rendered.
 
 ## Supported types
 
@@ -54,7 +54,7 @@ flowchart LR
 **Known limitations**
 
 - `click` events are not supported
-- Bidirectional arrow (`<-->`) has an SVG rendering bug ([beautiful-mermaid#58](https://github.com/niccolozy/beautiful-mermaid/issues/58))
+- Bidirectional arrow (`<-->`) has an SVG rendering bug ([beautiful-mermaid#58](https://github.com/lukilabs/beautiful-mermaid/issues/58))
 ```
 
 The `graph` keyword is an alias for `flowchart`:
@@ -315,7 +315,7 @@ sequenceDiagram
 - `box` groups are not supported
 - `create` / `destroy` (dynamic actor lifecycle) are not supported
 - Explicit `activate` / `deactivate` commands are not supported (`+`/`-` shorthand only)
-- A note placed before the first message is silently dropped ([beautiful-mermaid#53](https://github.com/niccolozy/beautiful-mermaid/issues/53))
+- A note placed before the first message is silently dropped ([beautiful-mermaid#53](https://github.com/lukilabs/beautiful-mermaid/issues/53))
 ```
 
 ### classDiagram
@@ -459,7 +459,7 @@ See {doc}`index` for full `autoclasstree` options (`:full:`, `:strict:`, `:names
 **Known limitations**
 
 - `click` / `note` / `link` are not supported
-- `classDef` assignments are not reflected in SVG output ([beautiful-mermaid#80](https://github.com/niccolozy/beautiful-mermaid/issues/80))
+- `classDef` assignments are not reflected in SVG output ([beautiful-mermaid#80](https://github.com/lukilabs/beautiful-mermaid/issues/80))
 ```
 
 ### stateDiagram / stateDiagram-v2

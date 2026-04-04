@@ -11,7 +11,7 @@ All configuration options use the `oceanid_` prefix in your Sphinx `conf.py`.
 | **Type** | `str` |
 | **Default** | `"1.1.3"` |
 
-The [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid) library version loaded from CDN. Ignored when `oceanid_local_js` is set.
+The [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) library version loaded from CDN. Ignored when `oceanid_local_js` is set.
 
 ```python
 oceanid_version = "1.1.3"
