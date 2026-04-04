@@ -33,7 +33,7 @@ Add `sphinx_oceanid` to the `extensions` list in your Sphinx `conf.py`:
 extensions = ["sphinx_oceanid"]
 ```
 
-No additional configuration is required. sphinx-oceanid works out of the box using the CDN-hosted [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid) library.
+No additional configuration is required. sphinx-oceanid works out of the box using the CDN-hosted [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) library.
 
 ## Local beautiful-mermaid bundle (optional)
 

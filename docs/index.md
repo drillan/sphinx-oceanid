@@ -176,7 +176,7 @@ In MyST, the `config` value must be a JSON string on a single line because MyST'
 Directive options (`:title:`, `:config:`) take precedence over frontmatter values. This allows overriding frontmatter in external files without editing the file itself.
 
 ```{note}
-sphinx-oceanid uses [beautiful-mermaid](https://github.com/niccolozy/beautiful-mermaid) as its rendering engine, which has its own color system based on `RenderOptions`. The following `config` keys are applied as per-diagram rendering overrides:
+sphinx-oceanid uses [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) as its rendering engine, which has its own color system based on `RenderOptions`. The following `config` keys are applied as per-diagram rendering overrides:
 
 `bg`, `fg`, `line`, `accent`, `muted`, `surface`, `border`, `font`, `padding`, `nodeSpacing`, `layerSpacing`, `componentSpacing`, `transparent`, `interactive`
 
