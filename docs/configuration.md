@@ -123,14 +123,14 @@ oceanid_height = "400px"
 | | |
 |---|---|
 | **Type** | `bool` |
-| **Default** | `False` |
+| **Default** | `True` |
 
 Enable pan-and-zoom interaction on all diagrams globally. Uses native Pointer Events and SVG viewBox manipulation — no d3.js dependency. Mouse wheel to zoom, drag to pan, double-click to reset, pinch to zoom on touch devices.
 
-To enable zoom on individual diagrams only, use the `:zoom:` directive option instead.
+Set to `False` to disable globally; you can still opt in per-diagram with the `:zoom:` directive option.
 
 ```python
-oceanid_zoom = True
+oceanid_zoom = False
 ```
 
 ### `oceanid_fullscreen`
@@ -138,12 +138,14 @@ oceanid_zoom = True
 | | |
 |---|---|
 | **Type** | `bool` |
-| **Default** | `False` |
+| **Default** | `True` |
 
 Enable a fullscreen button on all diagrams. Clicking it opens the diagram in a viewport-sized modal overlay. Close with Escape key, clicking outside, or the close button.
 
+Set to `False` to hide the fullscreen button on all diagrams.
+
 ```python
-oceanid_fullscreen = True
+oceanid_fullscreen = False
 ```
 
 ### `oceanid_fullscreen_button`
@@ -184,8 +186,8 @@ oceanid_fullscreen_button_opacity = 80
 | `oceanid_theme_light` | `str` | `"zinc-light"` | Light theme for auto mode |
 | `oceanid_width` | `str` | `"100%"` | Diagram container width |
 | `oceanid_height` | `str` | `"auto"` | Diagram container height |
-| `oceanid_zoom` | `bool` | `False` | Enable zoom globally |
-| `oceanid_fullscreen` | `bool` | `False` | Enable fullscreen modal |
+| `oceanid_zoom` | `bool` | `True` | Enable zoom globally |
+| `oceanid_fullscreen` | `bool` | `True` | Enable fullscreen modal |
 | `oceanid_fullscreen_button` | `str` | `"⛶"` | Fullscreen button character |
 | `oceanid_fullscreen_button_opacity` | `int` | `50` | Button opacity (0–100) |
 

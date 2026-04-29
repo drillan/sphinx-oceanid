@@ -45,8 +45,8 @@ CONFIG_SPECS: tuple[ConfigSpec, ...] = (
     ConfigSpec("oceanid_width", "100%", "html", str, "Diagram container width"),
     ConfigSpec("oceanid_height", "auto", "html", str, "Diagram container height"),
     # Feature flags
-    ConfigSpec("oceanid_zoom", False, "html", bool, "Enable zoom on all diagrams"),
-    ConfigSpec("oceanid_fullscreen", False, "html", bool, "Enable fullscreen modal"),
+    ConfigSpec("oceanid_zoom", True, "html", bool, "Enable zoom on all diagrams"),
+    ConfigSpec("oceanid_fullscreen", True, "html", bool, "Enable fullscreen modal"),
     ConfigSpec("oceanid_fullscreen_button", "\u26f6", "html", str, "Fullscreen button character"),
     ConfigSpec("oceanid_fullscreen_button_opacity", 50, "html", int, "Fullscreen button opacity (0-100)"),
 )

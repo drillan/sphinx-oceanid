@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Shortened `mermaid-diagram` skill description to satisfy `gh skill publish` recommended max (1024 chars)
+- **Breaking**: `oceanid_zoom` default changed from `False` to `True` — pan-and-zoom is now enabled on all diagrams by default. Set `oceanid_zoom = False` in `conf.py` to restore previous behavior.
+- **Breaking**: `oceanid_fullscreen` default changed from `False` to `True` — the fullscreen button is now shown on all diagrams by default. Set `oceanid_fullscreen = False` in `conf.py` to restore previous behavior.
 
 ## [0.1.2] - 2026-03-29
 
