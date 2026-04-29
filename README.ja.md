@@ -122,10 +122,10 @@ oceanid_theme_dark = "zinc-dark"
 oceanid_theme_light = "zinc-light"
 
 # 全ダイアグラムでズームを有効化（デフォルト: True）
-oceanid_zoom = False
+oceanid_zoom = True
 
 # フルスクリーンモーダルを有効化（デフォルト: True）
-oceanid_fullscreen = False
+oceanid_fullscreen = True
 
 # 非対応ダイアグラムタイプへの対応: "warning" または "error"（デフォルト: "warning"）
 oceanid_unsupported_action = "warning"
