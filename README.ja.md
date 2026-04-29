@@ -54,6 +54,20 @@ cd sphinx-oceanid
 pip install .
 ```
 
+## Claude Code スキル（オプション）
+
+本リポジトリには AI コーディングエージェント向けの [`mermaid-diagram`](skills/mermaid-diagram/SKILL.md) スキルが同梱されています。プロアクティブな図の提案、構文検証、対応 6 種すべてのサンプルを提供します。
+
+[`gh skill install`](https://docs.github.com/ja/copilot/customizing-copilot/agent-skills)（プレビュー、GitHub CLI 2.91 以上が必要）でインストール：
+
+```bash
+gh skill install drillan/sphinx-oceanid mermaid-diagram --agent claude-code
+```
+
+`--agent` で指定可能な値： `claude-code`, `github-copilot`, `cursor`, `codex`, `gemini`, `antigravity`。
+
+`--scope user` でユーザー全体にインストール可能です。詳細・バージョン pin・更新方法は [docs/install.md](docs/install.md#claude-code-skill) を参照してください。
+
 ## クイックスタート
 
 `conf.py` に拡張機能を追加します：

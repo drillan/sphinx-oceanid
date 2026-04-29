@@ -1,31 +1,24 @@
 ---
 name: mermaid-diagram
+license: BSD-3-Clause
 description: >
   Write Mermaid diagrams in Sphinx documentation using sphinx-oceanid.
   Supports both MyST Markdown (.md) and reStructuredText (.rst) syntax.
   Prevents common mistakes like using unsupported diagram types.
 
   MUST trigger when:
-  - Editing or creating .md or .rst files under docs/ in a project where
-    docs/conf.py contains sphinx_oceanid in the extensions list
-  - User asks to add a diagram, flowchart, sequence diagram, class diagram,
-    state diagram, ER diagram, or chart to documentation
-  - User mentions 'mermaid', 'diagram', or wants to visualize architecture,
-    workflows, data flows, class hierarchies, or state machines in their docs
+  - Editing .md/.rst files under docs/ where docs/conf.py contains sphinx_oceanid
+  - User asks to add a diagram (flowchart, sequence, class, state, ER, chart)
+  - User mentions 'mermaid'/'diagram' or wants to visualize architecture,
+    workflows, data flows, hierarchies, or state machines
 
-  SHOULD trigger proactively when:
-  - Writing documentation that describes processes, workflows, or step-by-step
-    flows (suggest flowchart)
-  - Writing documentation that describes component interactions or API calls
-    (suggest sequenceDiagram)
-  - Writing documentation that describes class hierarchies or module
-    relationships (suggest classDiagram)
-  - Writing documentation that describes state transitions or lifecycles
-    (suggest stateDiagram)
-  - Writing documentation that describes data models or entity relationships
-    (suggest erDiagram)
-  - Writing documentation that describes numeric data, comparisons, or trends
-    (suggest xychart-beta)
+  SHOULD trigger proactively when documentation describes:
+  - Processes/workflows (suggest flowchart)
+  - Component interactions or API calls (suggest sequenceDiagram)
+  - Class hierarchies or module relationships (suggest classDiagram)
+  - State transitions or lifecycles (suggest stateDiagram)
+  - Data models or entity relationships (suggest erDiagram)
+  - Numeric data, comparisons, or trends (suggest xychart-beta)
 ---
 
 # Mermaid Diagrams with sphinx-oceanid
