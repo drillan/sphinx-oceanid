@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-04-29
+
 ### Added
 
 - `mermaid-diagram` skill installable via `gh skill install drillan/sphinx-oceanid mermaid-diagram` (preview)
