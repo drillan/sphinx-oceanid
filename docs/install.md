@@ -92,3 +92,53 @@ pip install sphinx-autobuild
 ```bash
 make serve PORT=9000
 ```
+
+## Claude Code Skill
+
+sphinx-oceanid ships a `mermaid-diagram` skill that gives AI coding agents (Claude Code, GitHub Copilot, Cursor, etc.) proactive Mermaid suggestions and syntax validation while editing Sphinx docs.
+
+### Prerequisites
+
+- [GitHub CLI](https://cli.github.com/) **2.91 or later** (the `gh skill` extension is bundled; preview)
+
+### Install
+
+```bash
+gh skill install drillan/sphinx-oceanid mermaid-diagram --agent claude-code
+```
+
+Supported `--agent` values and install destinations:
+
+| Agent | Project scope (default) | User scope (`--scope user`) |
+|-------|--------------------------|------------------------------|
+| `claude-code` | `.claude/skills/` | `~/.claude/skills/` |
+| `github-copilot` | `.agents/skills/` | `~/.copilot/skills/` |
+| `cursor` | `.agents/skills/` | `~/.cursor/skills/` |
+| `codex`, `gemini`, `antigravity` | `.agents/skills/` | per-agent default |
+
+### Pin to a specific version
+
+```bash
+gh skill install drillan/sphinx-oceanid mermaid-diagram \
+    --agent claude-code --pin v0.1.2
+```
+
+### Update or remove
+
+```bash
+gh skill update --all              # update every installed skill
+gh skill update mermaid-diagram    # update only this skill
+```
+
+To remove the skill, delete its directory (e.g., `rm -rf .claude/skills/mermaid-diagram`).
+
+### Manual install (without gh CLI)
+
+Clone the repository and copy the skill directory:
+
+```bash
+git clone https://github.com/drillan/sphinx-oceanid.git
+cp -r sphinx-oceanid/skills/mermaid-diagram .claude/skills/
+```
+
+Manually placed skills are not tracked by `gh skill update`.

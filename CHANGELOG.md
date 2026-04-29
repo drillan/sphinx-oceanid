@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `mermaid-diagram` skill installable via `gh skill install drillan/sphinx-oceanid mermaid-diagram` (preview)
+- Claude Code skill installation guide in `README.md`, `README.ja.md`, and `docs/install.md`
+- `license: BSD-3-Clause` field in `skills/mermaid-diagram/SKILL.md` frontmatter
+
+### Changed
+
+- Shortened `mermaid-diagram` skill description to satisfy `gh skill publish` recommended max (1024 chars)
+
 ## [0.1.2] - 2026-03-29
 
 ### Added
