@@ -121,11 +121,11 @@ oceanid_theme = "auto"
 oceanid_theme_dark = "zinc-dark"
 oceanid_theme_light = "zinc-light"
 
-# Enable zoom on all diagrams (default: False)
-oceanid_zoom = True
+# Enable zoom on all diagrams (default: True)
+oceanid_zoom = False
 
-# Enable fullscreen modal (default: False)
-oceanid_fullscreen = True
+# Enable fullscreen modal (default: True)
+oceanid_fullscreen = False
 
 # Action for unsupported diagram types: "warning" or "error" (default: "warning")
 oceanid_unsupported_action = "warning"
