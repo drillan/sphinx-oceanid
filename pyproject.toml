@@ -10,7 +10,6 @@ keywords = ["sphinx", "mermaid", "diagrams", "documentation", "beautiful-mermaid
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: Sphinx :: Extension",
-    "License :: OSI Approved :: BSD License",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Documentation",
@@ -31,7 +30,7 @@ Repository = "https://github.com/drillan/sphinx-oceanid"
 Changelog = "https://github.com/drillan/sphinx-oceanid/blob/main/CHANGELOG.md"
 
 [build-system]
-requires = ["uv_build>=0.10.0,<0.11.0"]
+requires = ["uv_build>=0.11.0,<0.12.0"]
 build-backend = "uv_build"
 
 [project.optional-dependencies]
